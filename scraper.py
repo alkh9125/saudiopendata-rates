@@ -47,6 +47,10 @@ SESSION.headers.update({
 })
 TIMEOUT = 15
 
+# Plausible ranges used to reject garbage matches from page text/tables
+APR_RANGE  = (0.5, 30.0)
+FLAT_RANGE = (0.5, 10.0)
+
 
 # ══════════════════════════════════════════════════════════
 # APR ↔ FLAT CONVERSION
@@ -112,6 +116,15 @@ def extract_pct(text: str) -> float | None:
     return float(m.group(1)) if m else None
 
 
+def first_pct_in_range(text: str, low: float, high: float) -> float | None:
+    """Return the first percentage number in `text` that falls within [low, high]."""
+    for m in re.finditer(r"(\d+\.?\d*)\s*%", text):
+        val = float(m.group(1))
+        if low <= val <= high:
+            return val
+    return None
+
+
 # ══════════════════════════════════════════════════════════
 # BANK-SPECIFIC SCRAPERS (AUTO)
 # ══════════════════════════════════════════════════════════
@@ -132,7 +145,7 @@ def scrape_rajhi() -> dict:
             # Look for APR percentage in page text
             text = soup.get_text()
             m = re.search(r"معدل النسبة السنوي[^%\d]*(\d+\.?\d*)\s*%", text)
-            if m:
+            if m and APR_RANGE[0] <= float(m.group(1)) <= APR_RANGE[1]:
                 apr = float(m.group(1))
         if apr:
             result["personal"] = {"apr": apr, "apr_derived": False}
@@ -149,19 +162,18 @@ def scrape_rajhi() -> dict:
         soup = fetch("https://www.alrajhibank.com.sa/Personal/Finance/Personal-Finance/Personal-Finance-Buyout")
         apr = None
         if soup:
-            # Table with APR example exists in plain HTML
-            tables = soup.find_all("table")
-            for tbl in tables:
-                text = tbl.get_text()
-                m = re.search(r"(\d+\.?\d*)\s*%", text)
-                if m:
-                    apr = float(m.group(1))
-                    break
-            if not apr:
-                text = soup.get_text()
-                m = re.search(r"معدل النسبة السنوي[^%\d]*(\d+\.?\d*)\s*%", text)
-                if m:
-                    apr = float(m.group(1))
+            # Prefer the explicit APR disclosure label
+            text = soup.get_text()
+            m = re.search(r"معدل النسبة السنوي[^%\d]*(\d+\.?\d*)\s*%", text)
+            if m and APR_RANGE[0] <= float(m.group(1)) <= APR_RANGE[1]:
+                apr = float(m.group(1))
+
+            # Fallback: scan illustrative example tables for a plausible APR
+            if apr is None:
+                for tbl in soup.find_all("table"):
+                    apr = first_pct_in_range(tbl.get_text(), *APR_RANGE)
+                    if apr is not None:
+                        break
         if apr:
             result["buyout"] = {"apr": apr, "apr_derived": False}
             log.info(f"Rajhi buyout APR: {apr}%")
@@ -178,7 +190,7 @@ def scrape_rajhi() -> dict:
         if soup:
             text = soup.get_text()
             m = re.search(r"هامش ربح[^%\d]*(\d+\.?\d*)\s*%", text)
-            if m:
+            if m and FLAT_RANGE[0] <= float(m.group(1)) <= FLAT_RANGE[1]:
                 flat = float(m.group(1))
         if flat:
             apr = flat_to_apr(flat, years=20)
@@ -207,21 +219,21 @@ def scrape_riyad() -> dict:
 
         # Personal
         m = re.search(r"(?:شخصي|personal)[^%\d]{0,60}(\d+\.?\d*)\s*%", text, re.IGNORECASE)
-        if m:
+        if m and APR_RANGE[0] <= float(m.group(1)) <= APR_RANGE[1]:
             apr = float(m.group(1))
             result["personal"] = {"apr": apr, "apr_derived": False}
             log.info(f"Riyad personal APR: {apr}%")
 
         # Buyout
         m = re.search(r"(?:مديونية|buyout)[^%\d]{0,60}(\d+\.?\d*)\s*%", text, re.IGNORECASE)
-        if m:
+        if m and APR_RANGE[0] <= float(m.group(1)) <= APR_RANGE[1]:
             apr = float(m.group(1))
             result["buyout"] = {"apr": apr, "apr_derived": False}
             log.info(f"Riyad buyout APR: {apr}%")
 
         # Mortgage
         m = re.search(r"(?:عقاري|mortgage)[^%\d]{0,60}(\d+\.?\d*)\s*%", text, re.IGNORECASE)
-        if m:
+        if m and APR_RANGE[0] <= float(m.group(1)) <= APR_RANGE[1]:
             apr = float(m.group(1))
             result["mortgage"] = {"apr": apr, "apr_derived": False}
             log.info(f"Riyad mortgage APR: {apr}%")
@@ -246,14 +258,14 @@ def scrape_alinma() -> dict:
 
         # Personal — "يبدأ من X%"
         m = re.search(r"(?:شخصي)[^%\d]{0,100}يبدأ من[^%\d]{0,20}(\d+\.?\d*)\s*%", text, re.IGNORECASE)
-        if m:
+        if m and APR_RANGE[0] <= float(m.group(1)) <= APR_RANGE[1]:
             apr = float(m.group(1))
             result["personal"] = {"apr": apr, "apr_derived": False}
             log.info(f"Alinma personal APR: {apr}%")
 
         # Buyout
         m = re.search(r"(?:مديونية|buyout)[^%\d]{0,100}يبدأ من[^%\d]{0,20}(\d+\.?\d*)\s*%", text, re.IGNORECASE)
-        if m:
+        if m and APR_RANGE[0] <= float(m.group(1)) <= APR_RANGE[1]:
             apr = float(m.group(1))
             result["buyout"] = {"apr": apr, "apr_derived": False}
             log.info(f"Alinma buyout APR: {apr}%")
