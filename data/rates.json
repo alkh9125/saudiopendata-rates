@@ -1,32 +1,32 @@
 {
-  "last_updated": "2026-06-01",
-  "update_source": "mixed",
+  "last_updated": "2026-06-12",
+  "update_source": "auto+manual",
   "banks": [
     {
       "id": "rajhi",
       "name_ar": "مصرف الراجحي",
       "source_url": {
         "personal": "https://www.alrajhibank.com.sa/Personal/Finance/Personal-Finance",
-        "buyout":   "https://www.alrajhibank.com.sa/Personal/Finance/Personal-Finance/Personal-Finance-Buyout",
+        "buyout": "https://www.alrajhibank.com.sa/Personal/Finance/Personal-Finance/Personal-Finance-Buyout",
         "mortgage": "https://www.alrajhibank.com.sa/Personal/Finance/Real-Estate-Finance"
       },
       "scrape_method": "auto",
       "personal": {
         "flat": 2.5,
-        "apr": 4.66,
+        "apr": 4.73,
         "apr_derived": true,
         "max_amount": 1000000,
         "max_years": 5,
-        "last_updated": "2026-06-01",
+        "last_updated": "2026-06-12",
         "status": "ok"
       },
       "buyout": {
         "flat": null,
-        "apr": 5.61,
+        "apr": 2.64,
         "apr_derived": false,
         "max_amount": 1000000,
         "max_years": 5,
-        "last_updated": "2026-06-01",
+        "last_updated": "2026-06-12",
         "status": "ok"
       },
       "mortgage": {
@@ -36,7 +36,7 @@
         "max_amount": 5000000,
         "max_years": 30,
         "last_updated": "2026-06-01",
-        "status": "ok"
+        "status": "stale"
       }
     },
     {
@@ -44,7 +44,7 @@
       "name_ar": "البنك الأهلي السعودي",
       "source_url": {
         "personal": "https://www.alahli.com/ar/pages/personal-banking/finance/personal-finance",
-        "buyout":   "https://www.alahli.com/ar/pages/personal-banking/finance/finance-transfer-program",
+        "buyout": "https://www.alahli.com/ar/pages/personal-banking/finance/finance-transfer-program",
         "mortgage": "https://www.alahli.com/ar/pages/personal-banking/finance/home-finance"
       },
       "scrape_method": "manual",
@@ -81,7 +81,7 @@
       "name_ar": "بنك الرياض",
       "source_url": {
         "personal": "https://www.riyadbank.com/information/special-pages/arp-disclosure",
-        "buyout":   "https://www.riyadbank.com/information/special-pages/arp-disclosure",
+        "buyout": "https://www.riyadbank.com/information/special-pages/arp-disclosure",
         "mortgage": "https://www.riyadbank.com/information/special-pages/arp-disclosure"
       },
       "scrape_method": "auto",
@@ -92,7 +92,7 @@
         "max_amount": 1000000,
         "max_years": 5,
         "last_updated": "2026-06-01",
-        "status": "ok"
+        "status": "stale"
       },
       "buyout": {
         "flat": 2.5,
@@ -101,7 +101,7 @@
         "max_amount": 1000000,
         "max_years": 5,
         "last_updated": "2026-06-01",
-        "status": "ok"
+        "status": "stale"
       },
       "mortgage": {
         "flat": 3.5,
@@ -110,7 +110,7 @@
         "max_amount": 5000000,
         "max_years": 30,
         "last_updated": "2026-06-01",
-        "status": "ok"
+        "status": "stale"
       }
     },
     {
@@ -118,7 +118,7 @@
       "name_ar": "البنك العربي الوطني",
       "source_url": {
         "personal": "https://anb.com.sa/ar/web/anb/personal-finance-offer",
-        "buyout":   "https://anb.com.sa/ar/web/anb/personal-loan-offer2",
+        "buyout": "https://anb.com.sa/ar/web/anb/personal-loan-offer2",
         "mortgage": "https://anb.com.sa/web/anb/calculator"
       },
       "scrape_method": "manual",
@@ -155,7 +155,7 @@
       "name_ar": "مصرف الإنماء",
       "source_url": {
         "personal": "https://www.alinma.com/Retail/Financing/Personal-Finance/Personal-Finance",
-        "buyout":   "https://www.alinma.com/Retail/Financing/Personal-Finance/BuyOut---Debt",
+        "buyout": "https://www.alinma.com/Retail/Financing/Personal-Finance/BuyOut---Debt",
         "mortgage": "https://alinma.com/Prices-Finance-and-Products"
       },
       "scrape_method": "auto",
@@ -166,7 +166,7 @@
         "max_amount": 1000000,
         "max_years": 5,
         "last_updated": "2026-06-01",
-        "status": "ok"
+        "status": "stale"
       },
       "buyout": {
         "flat": null,
@@ -175,7 +175,7 @@
         "max_amount": 1000000,
         "max_years": 5,
         "last_updated": "2026-06-01",
-        "status": "ok"
+        "status": "stale"
       },
       "mortgage": {
         "flat": null,
@@ -192,7 +192,7 @@
       "name_ar": "بنك الجزيرة",
       "source_url": {
         "personal": "https://www.bankaljazira.com/ar/personal/finance/personal-finance",
-        "buyout":   "https://www.bankaljazira.com/ar/personal/finance/buyout",
+        "buyout": "https://www.bankaljazira.com/ar/personal/finance/buyout",
         "mortgage": "https://www.bankaljazira.com/ar/personal/finance/home-finance"
       },
       "scrape_method": "manual",
@@ -229,7 +229,7 @@
       "name_ar": "بنك البلاد",
       "source_url": {
         "personal": "https://www.bankalbilad.com/ar/personal/financing/personal/Pages/default.aspx",
-        "buyout":   "https://www.bankalbilad.com/ar/personal/financing/personal/Pages/default.aspx",
+        "buyout": "https://www.bankalbilad.com/ar/personal/financing/personal/Pages/default.aspx",
         "mortgage": "https://www.bankalbilad.com/ar/personal/financing/real-estate/albilad"
       },
       "scrape_method": "manual",
@@ -266,7 +266,7 @@
       "name_ar": "البنك الأول",
       "source_url": {
         "personal": "https://www.alawwalbank.com/ar/personal/finance-solutions/personal-finance",
-        "buyout":   "https://www.alawwalbank.com/ar/personal/finance-solutions/buyout",
+        "buyout": "https://www.alawwalbank.com/ar/personal/finance-solutions/buyout",
         "mortgage": "https://www.alawwalbank.com/ar/personal/finance-solutions/home-finance"
       },
       "scrape_method": "manual",
