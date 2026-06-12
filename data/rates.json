@@ -1,6 +1,6 @@
 {
   "last_updated": "2026-06-12",
-  "update_source": "auto+manual",
+  "update_source": "auto+bonokey",
   "banks": [
     {
       "id": "rajhi",
@@ -32,14 +32,14 @@
         "flat_derived": true
       },
       "mortgage": {
-        "flat": 3.5,
-        "apr": 6.5,
-        "apr_derived": true,
+        "flat": 1.65,
+        "apr": 2.99,
+        "apr_derived": false,
         "max_amount": 5000000,
         "max_years": 30,
-        "last_updated": "2026-06-01",
-        "status": "stale",
-        "flat_derived": false
+        "last_updated": "2026-06-12",
+        "status": "ok",
+        "flat_derived": true
       }
     },
     {
@@ -52,32 +52,32 @@
       },
       "scrape_method": "manual",
       "personal": {
-        "flat": 2.92,
-        "apr": 5.5,
+        "flat": 1.56,
+        "apr": 2.99,
         "apr_derived": false,
         "max_amount": 2500000,
         "max_years": 5,
-        "last_updated": "2026-06-01",
+        "last_updated": "2026-06-12",
         "status": "ok",
         "flat_derived": true
       },
       "buyout": {
-        "flat": 2.92,
-        "apr": 5.5,
+        "flat": 1.56,
+        "apr": 2.99,
         "apr_derived": false,
         "max_amount": 2500000,
         "max_years": 5,
-        "last_updated": "2026-06-01",
+        "last_updated": "2026-06-12",
         "status": "ok",
         "flat_derived": true
       },
       "mortgage": {
-        "flat": 4.2,
-        "apr": 6.86,
+        "flat": 1.81,
+        "apr": 3.25,
         "apr_derived": false,
         "max_amount": 6000000,
         "max_years": 30,
-        "last_updated": "2026-06-01",
+        "last_updated": "2026-06-12",
         "status": "ok",
         "flat_derived": true
       }
@@ -102,24 +102,24 @@
         "flat_derived": true
       },
       "buyout": {
-        "flat": 2.5,
-        "apr": 4.66,
-        "apr_derived": true,
+        "flat": 0.75,
+        "apr": 1.45,
+        "apr_derived": false,
         "max_amount": 1000000,
         "max_years": 5,
-        "last_updated": "2026-06-01",
-        "status": "stale",
-        "flat_derived": false
+        "last_updated": "2026-06-12",
+        "status": "ok",
+        "flat_derived": true
       },
       "mortgage": {
-        "flat": 3.5,
-        "apr": 6.5,
-        "apr_derived": true,
+        "flat": 2.43,
+        "apr": 4.25,
+        "apr_derived": false,
         "max_amount": 5000000,
         "max_years": 30,
-        "last_updated": "2026-06-01",
-        "status": "stale",
-        "flat_derived": false
+        "last_updated": "2026-06-12",
+        "status": "ok",
+        "flat_derived": true
       }
     },
     {
@@ -132,33 +132,34 @@
       },
       "scrape_method": "manual",
       "personal": {
-        "flat": 1.87,
-        "apr": 3.58,
+        "flat": 0.98,
+        "apr": 1.89,
         "apr_derived": false,
         "max_amount": 1000000,
         "max_years": 5,
-        "last_updated": "2026-06-01",
+        "last_updated": "2026-06-12",
         "status": "ok",
         "flat_derived": true
       },
       "buyout": {
-        "flat": 1.85,
-        "apr": 3.53,
+        "flat": 0.82,
+        "apr": 1.59,
         "apr_derived": false,
         "max_amount": 1000000,
         "max_years": 5,
-        "last_updated": "2026-06-01",
+        "last_updated": "2026-06-12",
         "status": "ok",
         "flat_derived": true
       },
       "mortgage": {
-        "flat": null,
-        "apr": null,
+        "flat": 2.46,
+        "apr": 4.29,
         "apr_derived": false,
-        "max_amount": null,
+        "max_amount": 5000000,
         "max_years": 30,
-        "last_updated": "2026-06-01",
-        "status": "unavailable"
+        "last_updated": "2026-06-12",
+        "status": "ok",
+        "flat_derived": true
       }
     },
     {
@@ -171,33 +172,34 @@
       },
       "scrape_method": "auto",
       "personal": {
-        "flat": 3.0,
-        "apr": 5.64,
+        "flat": 0.98,
+        "apr": 1.89,
         "apr_derived": false,
         "max_amount": 1000000,
         "max_years": 5,
-        "last_updated": "2026-06-01",
-        "status": "stale",
+        "last_updated": "2026-06-12",
+        "status": "ok",
         "flat_derived": true
       },
       "buyout": {
-        "flat": 1.79,
-        "apr": 3.43,
+        "flat": 1.03,
+        "apr": 2.0,
         "apr_derived": false,
         "max_amount": 1000000,
         "max_years": 5,
-        "last_updated": "2026-06-01",
-        "status": "stale",
+        "last_updated": "2026-06-12",
+        "status": "ok",
         "flat_derived": true
       },
       "mortgage": {
-        "flat": null,
-        "apr": null,
+        "flat": 2.42,
+        "apr": 4.23,
         "apr_derived": false,
-        "max_amount": null,
+        "max_amount": 5000000,
         "max_years": 30,
-        "last_updated": "2026-06-01",
-        "status": "unavailable"
+        "last_updated": "2026-06-12",
+        "status": "ok",
+        "flat_derived": true
       }
     },
     {
@@ -210,31 +212,34 @@
       },
       "scrape_method": "manual",
       "personal": {
-        "flat": null,
-        "apr": null,
+        "flat": 0.98,
+        "apr": 1.89,
         "apr_derived": false,
         "max_amount": 1000000,
         "max_years": 5,
         "last_updated": "2026-06-12",
-        "status": "unavailable"
+        "status": "ok",
+        "flat_derived": true
       },
       "buyout": {
-        "flat": null,
-        "apr": null,
+        "flat": 0.92,
+        "apr": 1.79,
         "apr_derived": false,
         "max_amount": 1000000,
         "max_years": 5,
         "last_updated": "2026-06-12",
-        "status": "unavailable"
+        "status": "ok",
+        "flat_derived": true
       },
       "mortgage": {
-        "flat": null,
-        "apr": null,
+        "flat": 2.08,
+        "apr": 3.7,
         "apr_derived": false,
-        "max_amount": null,
+        "max_amount": 5000000,
         "max_years": 30,
-        "last_updated": "2026-06-01",
-        "status": "unavailable"
+        "last_updated": "2026-06-12",
+        "status": "ok",
+        "flat_derived": true
       }
     },
     {
@@ -247,34 +252,34 @@
       },
       "scrape_method": "manual",
       "personal": {
-        "flat": 2.8,
-        "apr": 5.22,
-        "apr_derived": true,
+        "flat": 0.98,
+        "apr": 1.9,
+        "apr_derived": false,
         "max_amount": 1000000,
         "max_years": 5,
-        "last_updated": "2026-06-01",
+        "last_updated": "2026-06-12",
         "status": "ok",
-        "flat_derived": false
+        "flat_derived": true
       },
       "buyout": {
-        "flat": 2.8,
-        "apr": 5.22,
-        "apr_derived": true,
+        "flat": 0.98,
+        "apr": 1.9,
+        "apr_derived": false,
         "max_amount": 1000000,
         "max_years": 5,
-        "last_updated": "2026-06-01",
+        "last_updated": "2026-06-12",
         "status": "ok",
-        "flat_derived": false
+        "flat_derived": true
       },
       "mortgage": {
-        "flat": 3.5,
-        "apr": 6.5,
-        "apr_derived": true,
+        "flat": 2.4,
+        "apr": 4.2,
+        "apr_derived": false,
         "max_amount": 5000000,
         "max_years": 30,
-        "last_updated": "2026-06-01",
+        "last_updated": "2026-06-12",
         "status": "ok",
-        "flat_derived": false
+        "flat_derived": true
       }
     },
     {
@@ -287,31 +292,34 @@
       },
       "scrape_method": "manual",
       "personal": {
-        "flat": null,
-        "apr": null,
+        "flat": 1.03,
+        "apr": 1.99,
         "apr_derived": false,
         "max_amount": 1500000,
         "max_years": 5,
-        "last_updated": "2026-06-01",
-        "status": "unavailable"
+        "last_updated": "2026-06-12",
+        "status": "ok",
+        "flat_derived": true
       },
       "buyout": {
-        "flat": null,
-        "apr": null,
+        "flat": 1.03,
+        "apr": 1.99,
         "apr_derived": false,
-        "max_amount": null,
+        "max_amount": 1500000,
         "max_years": 5,
-        "last_updated": "2026-06-01",
-        "status": "unavailable"
+        "last_updated": "2026-06-12",
+        "status": "ok",
+        "flat_derived": true
       },
       "mortgage": {
-        "flat": null,
-        "apr": null,
+        "flat": 2.24,
+        "apr": 3.95,
         "apr_derived": false,
-        "max_amount": null,
+        "max_amount": 5000000,
         "max_years": 30,
-        "last_updated": "2026-06-01",
-        "status": "unavailable"
+        "last_updated": "2026-06-12",
+        "status": "ok",
+        "flat_derived": true
       }
     }
   ]

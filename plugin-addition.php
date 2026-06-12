@@ -205,7 +205,7 @@ function saod_bank_rates_table_shortcode( $atts ) {
         <?php $first = false; endforeach; ?>
 
         <div style="background:#fdf8ee;border:1px solid #f0e3c0;border-radius:8px;padding:10px 15px;margin-top:15px;font-size:12.5px;color:#7a6a45;line-height:1.8;">
-            <strong>تنبيه:</strong> النسب أعلاه استرشادية ومجمعة من المواقع الرسمية للبنوك، وقد تختلف النسبة الفعلية
+            <strong>تنبيه:</strong> النسب أعلاه تمثل أقل نسبة معلنة (يبدأ من) ومجمعة من المواقع الرسمية للبنوك ومنصة bonokey.com، وقد تختلف النسبة الفعلية
             حسب راتبك وجهة عملك ومدة التمويل. اضغط على «موقع البنك» للتحقق من النسبة المحدثة قبل اتخاذ أي قرار.
             <br>
             (*) = قيمة مشتقة رياضياً من النسبة الأخرى المعلنة
