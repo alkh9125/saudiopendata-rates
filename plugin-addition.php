@@ -3,7 +3,7 @@
  * Plugin Name: جدول مقارنة نسب البنوك
  * Plugin URI: https://github.com/alkh9125/saudiopendata-rates
  * Description: جدول مقارنة نسب التمويل للبنوك السعودية — يُحدَّث يومياً تلقائياً
- * Version: 1.1.0
+ * Version: 1.2.0
  * Author: SaudiOpenData
  * Text Domain: saod-rates
  */
@@ -131,9 +131,10 @@ function saod_bank_rates_table_shortcode( $atts ) {
                             $product = $bank[ $key ] ?? null;
                             if ( ! $product ) continue;
 
-                            $apr        = $product['apr'] ?? null;
-                            $flat       = $product['flat'] ?? null;
-                            $derived    = $product['apr_derived'] ?? false;
+                            $apr          = $product['apr'] ?? null;
+                            $flat         = $product['flat'] ?? null;
+                            $derived      = $product['apr_derived'] ?? false;
+                            $flat_derived = $product['flat_derived'] ?? false;
                             $status     = $product['status'] ?? 'unavailable';
                             $max_amount = $product['max_amount'] ?? null;
                             $max_years  = $product['max_years'] ?? null;
@@ -164,6 +165,9 @@ function saod_bank_rates_table_shortcode( $atts ) {
                                 $flat_html = '<span style="color:#bbb;">—</span>';
                             } else {
                                 $flat_html = esc_html( $flat . '%' );
+                                if ( $flat_derived ) {
+                                    $flat_html .= ' <span title="مشتق رياضياً من معدل النسبة السنوي" style="color:#f0ad4e;cursor:help;">*</span>';
+                                }
                             }
 
                             $amount_display = $max_amount ? number_format( $max_amount ) . ' ريال' : '—';
@@ -204,7 +208,7 @@ function saod_bank_rates_table_shortcode( $atts ) {
             <strong>تنبيه:</strong> النسب أعلاه استرشادية ومجمعة من المواقع الرسمية للبنوك، وقد تختلف النسبة الفعلية
             حسب راتبك وجهة عملك ومدة التمويل. اضغط على «موقع البنك» للتحقق من النسبة المحدثة قبل اتخاذ أي قرار.
             <br>
-            (*) = معدل APR مشتق رياضياً من الهامش الثابت
+            (*) = قيمة مشتقة رياضياً من النسبة الأخرى المعلنة
             &nbsp;|&nbsp; ⚠ = تعذّر التحديث التلقائي مؤخراً — النسبة من آخر تحديث ناجح
             &nbsp;|&nbsp; <strong>Flat</strong> = هامش الربح الثابت على أصل المبلغ، و<strong>APR</strong> = معدل النسبة السنوي
             الفعلي شامل الرسوم — المقارنة الصحيحة بين البنوك تكون بالـ APR.

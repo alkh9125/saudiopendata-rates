@@ -338,6 +338,36 @@ def log_history(rates: dict):
 
 
 # ══════════════════════════════════════════════════════════
+# DERIVE MISSING APR/FLAT
+# ══════════════════════════════════════════════════════════
+
+def derive_missing(bank: dict) -> dict:
+    """
+    Ensure every product entry has both APR and Flat:
+    derive whichever is missing from the other, flagging it
+    (apr_derived / flat_derived) so the table can mark it with (*).
+    """
+    for product in PRODUCTS:
+        entry = bank.get(product)
+        if not isinstance(entry, dict):
+            continue
+
+        years = 20 if product == "mortgage" else 5
+        apr, flat = entry.get("apr"), entry.get("flat")
+
+        if apr is not None and flat is None:
+            entry["flat"]         = apr_to_flat(apr, years)
+            entry["flat_derived"] = True
+        elif flat is not None and apr is None:
+            entry["apr"]         = flat_to_apr(flat, years)
+            entry["apr_derived"] = True
+        elif apr is not None and flat is not None:
+            entry.setdefault("flat_derived", False)
+
+    return bank
+
+
+# ══════════════════════════════════════════════════════════
 # MAIN
 # ══════════════════════════════════════════════════════════
 
@@ -369,6 +399,9 @@ def main():
                         rates["banks"][i][product]["status"] = "stale"
         else:
             log.info(f"── Manual bank (skipping auto-scrape): {bank['name_ar']} ──")
+
+        # Fill in whichever of APR/Flat is missing (manual banks included)
+        rates["banks"][i] = derive_missing(rates["banks"][i])
 
     if any_updated:
         rates["last_updated"]  = today
