@@ -1,9 +1,16 @@
 <?php
 /**
- * Bank Rates Comparison Table — Addition to حاسبة التمويل السعودية
- * Fetches rates from GitHub (saudiopendata-rates) and displays a comparison table.
- * Add this code to the end of the existing calculator plugin file.
+ * Plugin Name: جدول مقارنة نسب البنوك
+ * Plugin URI: https://github.com/alkh9125/saudiopendata-rates
+ * Description: جدول مقارنة نسب التمويل للبنوك السعودية — يُحدَّث يومياً تلقائياً
+ * Version: 1.0.0
+ * Author: SaudiOpenData
+ * Text Domain: saod-rates
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 
 // ── Configuration ────────────────────────────────────────────────────────────
 define( 'SAOD_RATES_URL', 'https://raw.githubusercontent.com/alkh9125/saudiopendata-rates/main/data/rates.json' );
