@@ -2,9 +2,27 @@
 /**
  * Plugin Name: حاسبة التمويل السعودية
  * Description: حاسبة شاملة للقروض الشخصية والعقارية وشراء المديونية والسداد المبكر
- * Version: 2.0
+ * Version: 2.1
  */
 if ( ! defined( 'ABSPATH' ) ) exit;
+
+function saod_calc_get_rates() {
+    $cached = get_option( 'saod_calc_rates_cache', [] );
+    if ( ! empty( $cached['data'] ) && time() - ( $cached['ts'] ?? 0 ) < 86400 ) {
+        return $cached['data'];
+    }
+    $url = 'https://raw.githubusercontent.com/alkh9125/saudiopendata-rates/main/data/rates.json';
+    $resp = wp_remote_get( $url, [ 'timeout' => 10, 'sslverify' => true ] );
+    if ( is_wp_error( $resp ) || wp_remote_retrieve_response_code( $resp ) !== 200 ) {
+        return $cached['data'] ?? null;
+    }
+    $data = json_decode( wp_remote_retrieve_body( $resp ), true );
+    if ( $data && ! empty( $data['banks'] ) ) {
+        update_option( 'saod_calc_rates_cache', [ 'data' => $data, 'ts' => time() ], false );
+        return $data;
+    }
+    return $cached['data'] ?? null;
+}
 
 function saod_finance_enqueue() {
     wp_enqueue_script(
@@ -18,6 +36,8 @@ function saod_finance_enqueue() {
 add_action( 'wp_enqueue_scripts', 'saod_finance_enqueue' );
 
 function saod_finance_calc_shortcode() {
+    $rates_data = saod_calc_get_rates();
+    $rates_json = $rates_data ? wp_json_encode( $rates_data ) : 'null';
     ob_start();
 ?>
 
@@ -405,6 +425,7 @@ table.sched thead th { background: var(--primary); color: #fff; font-weight: 700
 </style>
 
 <script>
+var SAOD_RATES = <?php echo $rates_json; ?>;
 (function() {
     function initCalc() {
 // ══════════════════════════════════════════════════════════
@@ -500,6 +521,60 @@ function setFmt(inp) {
   });
 }
 
+function bankSelectHTML(idPrefix) {
+  if (!SAOD_RATES || !SAOD_RATES.banks) return '';
+  var opts = '<option value="">— اختر بنك —</option>';
+  SAOD_RATES.banks.forEach(function(b) {
+    opts += '<option value="' + b.id + '">' + b.name_ar + '</option>';
+  });
+  return '<div class="field"><label>اختر بنك (تعبئة تلقائية)</label>' +
+    '<div class="input-wrap"><select id="' + idPrefix + '_bank" style="height:42px;width:100%;padding:0 12px;border:1px solid #ced4da;border-radius:var(--radius);font-size:1rem;font-family:inherit;outline:none;background:#fff;">' +
+    opts + '</select></div>' +
+    '<div class="note" id="' + idPrefix + '_bank_note" style="color:var(--primary)"></div></div>';
+}
+
+function mountBankSelect(idPrefix, product, rateInputId, rtState, rtGroupId, calcFn) {
+  var sel = document.getElementById(idPrefix + '_bank');
+  if (!sel || !SAOD_RATES) return;
+  sel.addEventListener('change', function() {
+    var bankId = sel.value;
+    if (!bankId) return;
+    var bank = SAOD_RATES.banks.find(function(b){ return b.id === bankId; });
+    if (!bank || !bank[product]) return;
+    var prod = bank[product];
+    var rateInput = document.getElementById(rateInputId);
+    var note = document.getElementById(idPrefix + '_bank_note');
+    if (prod.apr && !prod.apr_derived) {
+      rateInput.value = prod.apr;
+      rtState.rt = 'apr';
+      var grp = document.getElementById(rtGroupId);
+      if (grp) {
+        grp.querySelectorAll('button').forEach(function(b){ b.classList.remove('on'); });
+        var aprBtn = grp.querySelector('[data-v="apr"]');
+        if (aprBtn) aprBtn.classList.add('on');
+      }
+      if (note) note.textContent = bank.name_ar + ': APR ' + prod.apr + '% — Flat ≈ ' + (prod.flat||'—') + '%';
+    } else if (prod.flat) {
+      rateInput.value = prod.flat;
+      rtState.rt = 'flat';
+      var grp = document.getElementById(rtGroupId);
+      if (grp) {
+        grp.querySelectorAll('button').forEach(function(b){ b.classList.remove('on'); });
+        var flatBtn = grp.querySelector('[data-v="flat"]');
+        if (flatBtn) flatBtn.classList.add('on');
+      }
+      if (note) note.textContent = bank.name_ar + ': Flat ' + prod.flat + '%';
+    }
+    if (prod.status === 'stale' && note) {
+      note.textContent += ' ⚠ بيانات قديمة — تحقق من البنك';
+      note.style.color = 'var(--warn)';
+    } else if (note) {
+      note.style.color = 'var(--primary)';
+    }
+    if (calcFn) calcFn();
+  });
+}
+
 function togGroup(groupId, stateObj, key, cb) {
   const el = document.getElementById(groupId);
   if (!el) return;
@@ -562,6 +637,7 @@ function personalHTML() {
 
 <div class="sec">
   <div class="sec-title"><span class="badge">2</span> تفاصيل القرض</div>
+  ` + bankSelectHTML('p') + `
   <div class="g3">
     <div class="field">
       <label>نوع النسبة</label>
@@ -644,6 +720,7 @@ function mountPersonal() {
     else { n.classList.add('hidden'); r.value = '4.5'; }
     calc();
   });
+  mountBankSelect('p', 'personal', 'p_rate', st, 'ptog_rt', calc);
 
   ['p_sal','p_liab','p_amt','p_rate','p_years'].forEach(id => {
     const el = document.getElementById(id);
@@ -832,6 +909,7 @@ function mortgageHTML() {
 
 <div class="sec">
   <div class="sec-title"><span class="badge">2</span> التمويل</div>
+  ` + bankSelectHTML('m') + `
   <div class="g3">
     <div class="field"><label>مدة العقاري (سنة)</label><input id="m_yrs" type="number" value="20" min="5" max="30" style="height:42px;width:100%;padding:0 12px;border:1px solid #ced4da;border-radius:var(--radius);font-size:1rem;font-family:inherit;outline:none;"></div>
     <div class="field"><label>نسبة الهامش / الفائدة %</label><div class="input-wrap"><input id="m_rate" type="number" value="4.0" step="0.1"><span class="sfx">%</span></div>
@@ -954,6 +1032,7 @@ function mountMortgage() {
     calc();
   });
   togGroup('mtog_sub', st, 'sub', calcSupport);
+  mountBankSelect('m', 'mortgage', 'm_rate', st, 'mtog_rt', calc);
 
   ['m_sal','m_liab','m_yrs','m_rate','m_price','m_sai_v','m_eval','m_other','m_save','p2_yrs','p2_rate'].forEach(id => {
     const el = document.getElementById(id);
@@ -1181,6 +1260,7 @@ function buyoutHTML() {
       <div class="tog" id="botog_sec"><button class="on" data-v="emp">موظف (33%)</button><button data-v="ret">متقاعد (25%)</button></div>
     </div>
   </div>
+  ` + bankSelectHTML('bo') + `
   <div class="g3">
     <div class="field">
       <label>نوع النسبة</label>
@@ -1216,6 +1296,7 @@ function mountBuyout() {
   document.querySelectorAll('#tab-body .bofmt').forEach(setFmt);
   togGroup('botog_sec', st, 'sec', calc);
   togGroup('botog_rt',  st, 'rt',  calc);
+  mountBankSelect('bo', 'buyout', 'bo_rate', st, 'botog_rt', calc);
   ['bo_bal','bo_emi','bo_rem','bo_sal','bo_liab','bo_rate','bo_yrs','bo_extra'].forEach(id => {
     const el = document.getElementById(id);
     if(el) { el.addEventListener('input', calc); el.addEventListener('change', calc); }
