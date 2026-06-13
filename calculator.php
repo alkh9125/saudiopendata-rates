@@ -740,7 +740,7 @@ function mountPersonal() {
 
   function drawPersonalChart(sch) {
     const ctx = document.getElementById('p_chart');
-    if(!ctx) return;
+    if(!ctx || typeof Chart === 'undefined') return;
     if(chartInst) { chartInst.destroy(); chartInst = null; }
     const yData = [];
     let yr = {y:1, p:0, i:0};
@@ -1389,15 +1389,8 @@ function mountEarly() {
   }
 }
     }
-    // Wait for Chart.js to load
-    function waitForChart(tries) {
-        if (typeof Chart !== 'undefined') {
-            initCalc();
-        } else if (tries > 0) {
-            setTimeout(function() { waitForChart(tries - 1); }, 200);
-        }
-    }
-    waitForChart(20);
+    // Run immediately — Chart.js is optional (only needed for bar charts)
+    initCalc();
 })();
 </script>
 
