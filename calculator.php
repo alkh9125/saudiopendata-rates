@@ -3,7 +3,7 @@
  * Plugin Name: حاسبة التمويل السعودية
  * Plugin URI: https://github.com/alkh9125/saudiopendata-rates
  * Description: حاسبة تمويل شاملة — شخصي، عقاري، شراء مديونية، سداد مبكر — متوافقة مع أنظمة ساما وصندوق التنمية العقاري
- * Version: 3.0.0
+ * Version: 4.0.0
  * Author: SaudiOpenData
  * Text Domain: saod-calc
  */
@@ -74,7 +74,7 @@ function saod_calc_shortcode( $atts ) {
     .sc .fl{grid-column:1/-1;font-size:12px;font-weight:700;color:var(--g400);margin:0;padding-top:2px;text-transform:uppercase;letter-spacing:.3px}
 
     /* Collapsible */
-    .sc .col-tog{grid-column:1/-1;font-size:12px;color:var(--c);cursor:pointer;user-select:none;padding:2px 0}
+    .sc .col-tog{grid-column:1/-1;font-size:12px;color:var(--c);cursor:pointer;user-select:none;padding:6px 0;font-weight:600}
     .sc .col-tog:hover{text-decoration:underline}
     .sc .col-body{display:none;grid-column:1/-1}
     .sc .col-body.vis{display:grid;grid-template-columns:1fr 1fr;gap:16px}
@@ -159,6 +159,37 @@ function saod_calc_shortcode( $atts ) {
     .sc .xb button{padding:7px 16px;border:1px solid var(--g200);border-radius:8px;background:#fff;color:var(--g700);cursor:pointer;font-size:12px;transition:all .15s}
     .sc .xb button:hover{border-color:var(--c);color:var(--c)}
 
+    /* ── Cash Flow Table ──────────────────────────────── */
+    .sc .cft{background:#fff;border:1px solid var(--g200);border-radius:var(--rd);padding:18px;box-shadow:var(--sh);margin-bottom:12px}
+    .sc .cft h4{font-size:14px;margin:0 0 12px;color:var(--g700)}
+    .sc .cft-sec{margin-bottom:10px}
+    .sc .cft-hd{font-size:11px;font-weight:700;color:var(--g400);text-transform:uppercase;letter-spacing:.3px;padding:4px 0;border-bottom:1px solid var(--g200);margin-bottom:4px}
+    .sc .cft-r{display:flex;justify-content:space-between;padding:5px 0;font-size:12px;color:var(--g600)}
+    .sc .cft-r.sub{padding-right:14px;font-size:11px;color:var(--g400)}
+    .sc .cft-t{display:flex;justify-content:space-between;padding:6px 0;font-size:13px;font-weight:700;border-top:1px solid var(--g200);margin-top:4px}
+    .sc .cft-res{display:flex;justify-content:space-between;padding:10px 14px;border-radius:8px;font-size:14px;font-weight:700;margin-top:8px}
+    .sc .cft-res.pos{background:var(--gl);color:#166534;border:1px solid #bbf7d0}
+    .sc .cft-res.neg{background:#fef2f2;color:#991b1b;border:1px solid #fecaca}
+
+    /* ── Bar Chart (Yearly Breakdown) ─────────────────── */
+    .sc .bars{background:#fff;border:1px solid var(--g200);border-radius:var(--rd);padding:18px;box-shadow:var(--sh);margin-bottom:12px;overflow:hidden}
+    .sc .bars h4{font-size:13px;margin:0 0 10px;color:var(--g700)}
+    .sc .bar-row{display:flex;align-items:center;gap:8px;margin:3px 0}
+    .sc .bar-lbl{min-width:40px;font-size:10px;color:var(--g500);text-align:center;flex-shrink:0}
+    .sc .bar-track{flex:1;height:20px;display:flex;border-radius:4px;overflow:hidden;background:var(--g100)}
+    .sc .bar-p{background:var(--c);height:100%;transition:width .3s}
+    .sc .bar-i{background:var(--o);height:100%;transition:width .3s}
+    .sc .bar-val{min-width:100px;font-size:10px;color:var(--g500);text-align:right;flex-shrink:0;direction:ltr}
+    .sc .bar-leg{display:flex;gap:14px;justify-content:center;margin-top:8px;font-size:11px;color:var(--g500)}
+    .sc .bar-leg span{display:flex;align-items:center;gap:4px}
+    .sc .bar-leg i{width:10px;height:10px;border-radius:2px;display:inline-block}
+
+    /* ── Tips ─────────────────────────────────────────── */
+    .sc .tips{background:var(--g50);border:1px solid var(--g200);border-radius:var(--rd);padding:16px 18px;margin-bottom:12px}
+    .sc .tips h4{font-size:13px;margin:0 0 8px;color:var(--g700)}
+    .sc .tip{font-size:12px;color:var(--g600);padding:4px 0;line-height:1.7;display:flex;gap:6px}
+    .sc .tip:before{content:'●';color:var(--c);font-size:8px;margin-top:5px;flex-shrink:0}
+
     /* Disclaimer */
     .sc .disc{font-size:11px;color:var(--g400);text-align:center;margin-top:14px;line-height:1.8}
 
@@ -169,8 +200,9 @@ function saod_calc_shortcode( $atts ) {
         .sc .hero .hv{font-size:26px}
         .sc .cs{flex-direction:column}
         .sc .er{grid-template-columns:1fr}
+        .sc .bar-val{min-width:70px;font-size:9px}
     }
-    @media print{.sc .sc-form,.sc .sc-tabs,.sc .xb,.sc .disc{display:none!important}.sc .sw{display:block!important;max-height:none!important}}
+    @media print{.sc .sc-form,.sc .sc-tabs,.sc .xb,.sc .disc,.sc .tips{display:none!important}.sc .sw{display:block!important;max-height:none!important}}
     </style>
 
     <div class="sc-hd">
@@ -224,6 +256,27 @@ function saod_calc_shortcode( $atts ) {
                 <div class="sr"><input type="range" data-k="m_rate" min="0.5" max="12" value="4.25" step="0.01"><div class="sv"><span data-d="m_rate">4.25</span>%</div></div>
                 <div style="font-size:11px;color:var(--g400);margin-top:3px" data-d="m_rate_conv"></div>
             </div>
+
+            <hr class="fd">
+            <div class="col-tog" data-col="m_cashflow">▸ تحليل التدفق النقدي — مدخرات، سعي، تقييم، تمويل جسري</div>
+            <div class="col-body" data-colb="m_cashflow">
+                <div class="sc-f"><label>المدخرات المتاحة</label><div class="iw"><input type="text" data-k="m_savings" placeholder="200,000" inputmode="numeric" class="hs"><span class="sfx">ر.س</span></div></div>
+                <div class="sc-f"><label>رسوم التقييم</label><div class="iw"><input type="text" data-k="m_eval_fee" value="3,000" inputmode="numeric" class="hs"><span class="sfx">ر.س</span></div></div>
+                <hr class="fd">
+                <p class="fl">السعي (الوساطة العقارية)</p>
+                <div class="sc-f full"><div class="cg" data-g="m_broker_type"><button type="button" class="cb on" data-v="pct">نسبة %</button><button type="button" class="cb" data-v="fixed">مبلغ ثابت</button><button type="button" class="cb" data-v="none">بدون سعي</button></div></div>
+                <div class="sc-f" data-show="m_broker_type=pct"><label>نسبة السعي</label><div class="iw"><input type="number" data-k="m_broker_pct" value="2.5" min="0" max="10" step="0.1"><span class="sfx">%</span></div></div>
+                <div class="sc-f" data-show="m_broker_type=fixed"><label>مبلغ السعي</label><div class="iw"><input type="text" data-k="m_broker_fixed" value="25,000" inputmode="numeric" class="hs"><span class="sfx">ر.س</span></div></div>
+                <hr class="fd">
+                <p class="fl">تمويل جسري (شخصي لتغطية الدفعة)</p>
+                <div class="sc-f full"><label>تفعيل التمويل الجسري؟</label><div class="cg" data-g="m_bridge"><button type="button" class="cb on" data-v="no">لا</button><button type="button" class="cb" data-v="yes">نعم</button></div></div>
+                <div class="sc-f" data-show="m_bridge=yes" style="display:none"><label>نسبة التمويل الجسري (APR)</label><div class="iw"><input type="number" data-k="m_bridge_rate" value="4.25" min="0.5" max="12" step="0.01"><span class="sfx">%</span></div></div>
+                <div class="sc-f" data-show="m_bridge=yes" style="display:none"><label>مدة التمويل الجسري (سنوات)</label><div class="iw"><input type="number" data-k="m_bridge_years" value="5" min="1" max="5" step="1"></div></div>
+                <div class="sc-f full" data-show="m_bridge=yes" style="display:none">
+                    <label>نسبة استخدام التمويل الجسري</label>
+                    <div class="sr"><input type="range" data-k="m_bridge_usage" min="0" max="100" value="100" step="5"><div class="sv"><span data-d="m_bridge_usage">100</span>%</div></div>
+                </div>
+            </div>
         </div></div>
         <div class="sc-res" data-r="mortgage"></div>
     </div>
@@ -272,44 +325,26 @@ function saod_calc_shortcode( $atts ) {
     if(!W) return;
 
     /* ══════════════════════════════════════════════
-       §3 REGULATORY CONFIG — all in one object
+       §3 REGULATORY CONFIG
        ══════════════════════════════════════════════ */
     var CFG = {
-        // §3.1 Admin fees
         admin_fee_personal: { pct: 0.5, cap: 2500, effective: '2025-12-22', source: 'https://rulebook.sama.gov.sa/en/guide-financial-institutions-services-fees' },
         admin_fee_realestate: { pct: 1.0, cap: 5000, effective: '2025-12-22', source: 'https://rulebook.sama.gov.sa/en/guide-financial-institutions-services-fees' },
         vat_pct: 15,
-
-        // §3.2 LTV
         ltv_first_home: 0.90,
         ltv_second_bank: 0.70,
         ltv_second_finco: 0.85,
-        ltv_source: 'https://rulebook.sama.gov.sa/en/implementing-regulation-real-estate-finance-law',
-
-        // §3.3 RETT
         rett_pct: 5,
         rett_first_home_exempt: 1000000,
-        rett_source: 'https://zatca.gov.sa/en/RulesRegulations/Taxes/Pages/RETT.aspx',
-
-        // §3.4 REDF
         redf_dp_tiers: [0, 100000, 150000],
         redf_profit_subsidy_cap: 500000,
         redf_full_subsidy_salary: 14000,
-        redf_source: 'https://redf.gov.sa/',
-
-        // §3.5 DBR
         dbr_employee: 0.3333,
         dbr_retiree: 0.25,
         dbr_total_excl_re: 0.45,
         dbr_total_incl_re: 0.55,
-        dbr_source: 'https://rulebook.sama.gov.sa/en/responsible-lending-principles-individual-customers-0',
-
-        // §3.6 Early settlement
         early_reinvest_months: 3,
         early_prohib_years: 2,
-        early_source: 'https://rulebook.sama.gov.sa/en/early-repayment',
-
-        // Tenure limits
         max_personal_years: 5,
         max_mortgage_years: 30,
         max_retired_personal: 5,
@@ -317,7 +352,7 @@ function saod_calc_shortcode( $atts ) {
     };
 
     /* ══════════════════════════════════════════════
-       CALCULATION ENGINE (pure functions)
+       CALCULATION ENGINE
        ══════════════════════════════════════════════ */
     var E = {};
 
@@ -443,6 +478,19 @@ function saod_calc_shortcode( $atts ) {
         };
     };
 
+    E.yearlyBreakdown = function(schedule) {
+        var years = [], yP=0, yI=0;
+        for(var i=0;i<schedule.length;i++){
+            yP += schedule[i].principal;
+            yI += schedule[i].interest;
+            if((i+1)%12===0 || i===schedule.length-1){
+                years.push({year:Math.ceil((i+1)/12), principal:yP, interest:yI, total:yP+yI});
+                yP=0; yI=0;
+            }
+        }
+        return years;
+    };
+
     /* ══════════════════════════════════════════════
        UI HELPERS
        ══════════════════════════════════════════════ */
@@ -454,7 +502,6 @@ function saod_calc_shortcode( $atts ) {
     function gv(k){var el=$('[data-k="'+k+'"]');if(!el)return 0;if(el.type==='number')return parseFloat(el.value)||0;return pn(el.value)}
     function sv(k,v){var el=$('[data-k="'+k+'"]');if(el){el.value=typeof v==='number'?fm(v):v}}
     function gc(g){var on=$('[data-g="'+g+'"] .cb.on');return on?on.getAttribute('data-v'):'';}
-    function dd(sel){return $(sel)?$(sel).getAttribute('data-d')||'':''}
 
     var activeTab = <?php echo wp_json_encode( $initial_tab ); ?>;
     var rateModes = {personal:'apr',mortgage:'apr',buyout:'apr'};
@@ -516,6 +563,18 @@ function saod_calc_shortcode( $atts ) {
         inp.addEventListener('input',calc);
     });
 
+    // Collapsible toggles
+    $$('.col-tog').forEach(function(tog){
+        tog.addEventListener('click',function(){
+            var key = tog.getAttribute('data-col');
+            var body = $('[data-colb="'+key+'"]');
+            if(!body) return;
+            var open = body.classList.toggle('vis');
+            tog.textContent = (open ? '▾ ' : '▸ ') + tog.textContent.replace(/^[▸▾]\s*/, '');
+            if(open) handleConditionalShow();
+        });
+    });
+
     function handleConditionalShow(){
         $$('[data-show]').forEach(function(el){
             var rule = el.getAttribute('data-show').split('=');
@@ -540,6 +599,37 @@ function saod_calc_shortcode( $atts ) {
         if(mode==='apr') d.textContent='يعادل Flat ≈ '+E.aprToFlat(val,years)+'%';
         else d.textContent='يعادل APR ≈ '+E.flatToApr(val,years)+'%';
     }
+
+    /* ══════════════════════════════════════════════
+       TIPS DATA
+       ══════════════════════════════════════════════ */
+    var TIPS = {
+        personal: [
+            'قارن بالـ APR وليس النسبة الثابتة — الـ APR يشمل الفرق الناتج عن طريقة احتساب الأقساط.',
+            'الرسوم الإدارية تُخصم عند الصرف في بعض البنوك. اسأل: هل المبلغ المحول لحسابي قبل أو بعد الرسوم؟',
+            'بعض جهات العمل لديها اتفاقيات أسعار خاصة مع البنوك — اسأل قسم الموارد البشرية.',
+            'إذا لديك تمويل حالي بنسبة أعلى، فكّر بشراء المديونية قبل أخذ تمويل جديد.'
+        ],
+        mortgage: [
+            'إعفاء المسكن الأول يوفر لك حتى 50,000 ر.س من ضريبة التصرفات العقارية.',
+            'دعم صندوق التنمية العقاري يقلل التكلفة بشكل كبير لرواتب حتى 14,000 ر.س.',
+            'التمويل الجسري (قرض شخصي لتغطية الدفعة) يضيف عبئاً شهرياً — خطط لسداده بأسرع وقت.',
+            'قارن التكلفة الكاملة (قسط + رسوم + ضريبة + سعي + تقييم) وليس القسط الشهري فقط.',
+            'نسبة الاستقطاع الشامل مع العقاري حتى 55% — لكن الأقل أفضل لراحتك المالية.'
+        ],
+        buyout: [
+            'شراء المديونية يستحق عندما الفرق بالنسبة أكثر من 1% والمدة المتبقية طويلة.',
+            'تذكّر أن تعويض السداد المبكر (3 أشهر أرباح) يُحسب ضمن تكلفة النقل.',
+            'كلما كان النقل أبكر في عمر القرض، كلما كان التوفير أكبر.',
+            'بعض البنوك تعرض نقداً إضافياً مع شراء المديونية — لكن هذا يزيد التكلفة الإجمالية.'
+        ],
+        early: [
+            'ساما تحدد تعويض السداد المبكر بأرباح 3 أشهر كحد أقصى (قاعدة إعادة الاستثمار).',
+            'التمويل العقاري: ممنوع السداد المبكر أول سنتين. بعدها يحق لك بدون قيد.',
+            'تكاليف التأمين والطرف الثالث غير المستردة تُضاف لمبلغ السداد — اسأل بنكك عن التفاصيل.',
+            'إذا توفر لديك مبلغ كبير، السداد المبكر يوفر أكثر كلما كانت النسبة أعلى والمدة المتبقية أطول.'
+        ]
+    };
 
     /* ══════════════════════════════════════════════
        RENDER RESULTS
@@ -574,8 +664,32 @@ function saod_calc_shortcode( $atts ) {
         if(data.fees) {
             h += '<div class="fb"><h4>تفصيل الرسوم والتكاليف</h4>';
             data.fees.forEach(function(f){
-                h += '<div class="fr'+(f.total?' tot':'')+'"><span>'+f.label+'</span><span class="fees-val">'+f.value+'</span></div>';
+                h += '<div class="fr'+(f.total?' tot':'')+'"><span>'+f.label+'</span><span>'+f.value+'</span></div>';
             });
+            h += '</div>';
+        }
+
+        // Cash flow table
+        if(data.cashflow) {
+            var cf = data.cashflow;
+            h += '<div class="cft"><h4>تحليل التدفق النقدي — هل تكفي سيولتك؟</h4>';
+
+            h += '<div class="cft-sec"><div class="cft-hd">المطلوب نقداً</div>';
+            cf.costs.forEach(function(c){
+                h += '<div class="cft-r'+(c.sub?' sub':'')+'"><span>'+c.label+'</span><span>'+c.value+'</span></div>';
+            });
+            h += '<div class="cft-t"><span>إجمالي المطلوب</span><span>'+fm(cf.totalCosts)+' ر.س</span></div>';
+            h += '</div>';
+
+            h += '<div class="cft-sec"><div class="cft-hd">المتاح</div>';
+            cf.funds.forEach(function(c){
+                h += '<div class="cft-r'+(c.sub?' sub':'')+'"><span>'+c.label+'</span><span>'+c.value+'</span></div>';
+            });
+            h += '<div class="cft-t"><span>إجمالي المتاح</span><span>'+fm(cf.totalFunds)+' ر.س</span></div>';
+            h += '</div>';
+
+            var gap = cf.totalFunds - cf.totalCosts;
+            h += '<div class="cft-res '+(gap>=0?'pos':'neg')+'"><span>'+(gap>=0?'فائض':'عجز')+'</span><span>'+fm(Math.abs(gap))+' ر.س</span></div>';
             h += '</div>';
         }
 
@@ -611,7 +725,25 @@ function saod_calc_shortcode( $atts ) {
             h += '</div></div>';
         }
 
-        // Early settlement section (for personal/mortgage tabs)
+        // Bar chart (yearly breakdown)
+        if(data.schedule && data.schedule.length > 12) {
+            var yrs = E.yearlyBreakdown(data.schedule);
+            var maxTotal = Math.max.apply(null, yrs.map(function(y){return y.total}));
+            h += '<div class="bars"><h4>توزيع الأقساط السنوي — أصل الدين مقابل كلفة الأجل</h4>';
+            yrs.forEach(function(y){
+                var pW = (y.principal/maxTotal*100).toFixed(1);
+                var iW = (y.interest/maxTotal*100).toFixed(1);
+                h += '<div class="bar-row">';
+                h += '<div class="bar-lbl">'+y.year+'</div>';
+                h += '<div class="bar-track"><div class="bar-p" style="width:'+pW+'%"></div><div class="bar-i" style="width:'+iW+'%"></div></div>';
+                h += '<div class="bar-val">'+fm(y.principal)+' | '+fm(y.interest)+'</div>';
+                h += '</div>';
+            });
+            h += '<div class="bar-leg"><span><i style="background:var(--c)"></i> أصل الدين</span><span><i style="background:var(--o)"></i> كلفة الأجل</span></div>';
+            h += '</div>';
+        }
+
+        // Early settlement section
         if(data.earlySection) {
             var es = data.earlySection;
             h += '<div class="es"><h4>السداد المبكر</h4>';
@@ -641,6 +773,15 @@ function saod_calc_shortcode( $atts ) {
                 }
             });
             h += '</tbody></table></div></div>';
+        }
+
+        // Tips
+        if(data.tips && data.tips.length) {
+            h += '<div class="tips"><h4>نصائح</h4>';
+            data.tips.forEach(function(t){
+                h += '<div class="tip"><span>'+t+'</span></div>';
+            });
+            h += '</div>';
         }
 
         container.innerHTML = h;
@@ -714,7 +855,6 @@ function saod_calc_shortcode( $atts ) {
         }
 
         var schedule = E.amortize(amount, apr, months);
-        var earlyData = E.earlySettle(amount*0.5, apr, Math.round(months/2), 0);
 
         var data = {
             heroLabel: 'القسط الشهري',
@@ -742,7 +882,8 @@ function saod_calc_shortcode( $atts ) {
                     {label:'رسوم + ضريبة',value:fees.total,color:'var(--p)'}
                 ]
             },
-            schedule: schedule
+            schedule: schedule,
+            tips: TIPS.personal
         };
 
         if(salary>0){
@@ -784,10 +925,18 @@ function saod_calc_shortcode( $atts ) {
 
         // RETT
         var rett = E.rett(prop, firstHome);
-        var rettExempt = firstHome ? Math.min(prop, CFG.rett_first_home_exempt) * CFG.rett_pct/100 : 0;
 
         // Fees
         var fees = E.adminFee(financed, true);
+
+        // Brokerage
+        var brokerType = gc('m_broker_type') || 'pct';
+        var brokerage = 0;
+        if(brokerType === 'pct') brokerage = prop * (gv('m_broker_pct') || 2.5) / 100;
+        else if(brokerType === 'fixed') brokerage = gv('m_broker_fixed');
+
+        // Eval fees
+        var evalFee = gv('m_eval_fee');
 
         // EMI
         var emi = E.pmt(financed, apr, months);
@@ -804,23 +953,65 @@ function saod_calc_shortcode( $atts ) {
 
         var trueApr = E.trueApr(financed - fees.total, effectiveEmi, months);
 
-        var totalCash = userDown + rett + fees.total;
-        var totalCost = effectiveTotal + totalCash;
+        // Bridge loan
+        var bridgeOn = gc('m_bridge') === 'yes';
+        var bridgeAmount = 0, bridgeEmi = 0, bridgeTotal = 0, bridgeProfit = 0;
+        var bridgeUsage = 100;
+        if(bridgeOn){
+            var bridgeRate = gv('m_bridge_rate') || 4.25;
+            var bridgeYears = gv('m_bridge_years') || 5;
+            var bridgeMonths = bridgeYears * 12;
+            bridgeUsage = parseInt($('[data-k="m_bridge_usage"]').value) || 100;
 
+            var savings = gv('m_savings');
+            var totalUpfront = userDown + rett + brokerage + evalFee + fees.total;
+            var gap = Math.max(0, totalUpfront - savings - dpSupport);
+            bridgeAmount = Math.round(gap * bridgeUsage / 100);
+
+            if(bridgeAmount > 0){
+                var bridgeFees = E.adminFee(bridgeAmount, false);
+                bridgeEmi = E.pmt(bridgeAmount, bridgeRate, bridgeMonths);
+                bridgeTotal = bridgeEmi * bridgeMonths;
+                bridgeProfit = bridgeTotal - bridgeAmount;
+            }
+        }
+
+        var combinedEmi = effectiveEmi + bridgeEmi;
+
+        // Cash flow analysis
+        var savings = gv('m_savings');
+        var totalCosts = userDown + rett + brokerage + evalFee + fees.total;
+        var totalFunds = savings + dpSupport + (bridgeOn ? bridgeAmount : 0);
+
+        var costItems = [
+            {label:'الدفعة المقدمة (من جيبك)', value:fm(userDown)+' ر.س'},
+            {label:'ضريبة التصرفات العقارية (RETT)', value:fm(rett)+' ر.س'}
+        ];
+        if(brokerage > 0) costItems.push({label:'السعي (الوساطة)', value:fm(brokerage)+' ر.س'});
+        if(evalFee > 0) costItems.push({label:'رسوم التقييم', value:fm(evalFee)+' ر.س'});
+        costItems.push({label:'الرسوم الإدارية + ضريبة', value:fm(fees.total)+' ر.س'});
+
+        var fundItems = [];
+        if(savings > 0) fundItems.push({label:'المدخرات', value:fm(savings)+' ر.س'});
+        if(dpSupport > 0) fundItems.push({label:'دعم الدفعة المقدمة (REDF)', value:fm(dpSupport)+' ر.س'});
+        if(bridgeOn && bridgeAmount > 0) fundItems.push({label:'حصيلة التمويل الجسري', value:fm(bridgeAmount)+' ر.س', sub:true});
+        if(fundItems.length === 0) fundItems.push({label:'لم تُدخل مدخرات', value:'0 ر.س'});
+
+        var hasCashFlow = savings > 0 || bridgeOn;
+
+        // Alerts
         var alerts = [];
-        // LTV
         alerts.push({type:'in',text:'نسبة التمويل (LTV): <strong>'+(ltv*100)+'%</strong> — الدفعة الأولى المطلوبة: <strong>'+((1-ltv)*100)+'%</strong> = '+fm(minDown)+' ر.س'+(dpSupport>0?' (بعد دعم REDF '+fm(dpSupport)+' ر.س = '+fm(userDown)+' ر.س من جيبك)':'')});
 
-        // RETT
         if(firstHome && prop<=CFG.rett_first_home_exempt){
-            alerts.push({type:'ok',text:'✓ ضريبة التصرفات العقارية: <strong>معفى بالكامل</strong> — المسكن الأول بقيمة أقل من '+fm(CFG.rett_first_home_exempt)+' ر.س. الدولة تتحمل الضريبة.'});
+            alerts.push({type:'ok',text:'✓ ضريبة التصرفات العقارية: <strong>معفى بالكامل</strong> — المسكن الأول بقيمة أقل من '+fm(CFG.rett_first_home_exempt)+' ر.س.'});
         } else if(firstHome){
+            var rettExempt = Math.min(prop, CFG.rett_first_home_exempt) * CFG.rett_pct/100;
             alerts.push({type:'wn',text:'⚠ ضريبة التصرفات العقارية: <strong>'+fm(rett)+' ر.س</strong> — الإعفاء يغطي أول '+fm(CFG.rett_first_home_exempt)+' ر.س فقط (وفّرت '+fm(rettExempt)+' ر.س).'});
         } else {
             alerts.push({type:'wn',text:'⚠ ضريبة التصرفات العقارية: <strong>'+fm(rett)+' ر.س</strong> (5% من قيمة العقار). لا يوجد إعفاء للمسكن الثاني.'});
         }
 
-        // REDF
         if(isSubsidized){
             if(redf.totalSubsidy>0){
                 alerts.push({type:'ok',text:'✓ دعم REDF: يتحمل الصندوق <strong>'+fm(redf.totalSubsidy)+' ر.س</strong> من الأرباح ('+(redf.coveragePct*100).toFixed(0)+'% تغطية على أول '+fm(CFG.redf_profit_subsidy_cap)+' ر.س). القسط بعد الدعم: <strong>'+fm(effectiveEmi)+' ر.س</strong>'});
@@ -831,13 +1022,22 @@ function saod_calc_shortcode( $atts ) {
             }
         }
 
-        // DBR
         if(salary>0){
             var dbrLim = CFG.dbr_total_incl_re;
-            var ratio = effectiveEmi/salary;
-            if(ratio<=E.dbr(isRetired)) alerts.push({type:'ok',text:'✓ الاستقطاع <strong>'+(ratio*100).toFixed(1)+'%</strong> — ضمن الحد.'});
-            else if(ratio<=dbrLim) alerts.push({type:'wn',text:'⚠ الاستقطاع <strong>'+(ratio*100).toFixed(1)+'%</strong> — مقبول مع التمويل العقاري (حد 55%) لكن يتجاوز حد التمويل الشخصي.'});
-            else alerts.push({type:'dg',text:'✕ الاستقطاع <strong>'+(ratio*100).toFixed(1)+'%</strong> — يتجاوز الحد الأقصى الشامل (55%). مرجع: ساما.'});
+            var ratio = combinedEmi/salary;
+            if(ratio<=E.dbr(isRetired)) alerts.push({type:'ok',text:'✓ الاستقطاع <strong>'+(ratio*100).toFixed(1)+'%</strong>'+(bridgeEmi>0?' (عقاري + جسري)':'')+' — ضمن الحد.'});
+            else if(ratio<=dbrLim) alerts.push({type:'wn',text:'⚠ الاستقطاع <strong>'+(ratio*100).toFixed(1)+'%</strong>'+(bridgeEmi>0?' (عقاري + جسري)':'')+' — مقبول مع التمويل العقاري (حد 55%) لكن يتجاوز حد التمويل الشخصي.'});
+            else alerts.push({type:'dg',text:'✕ الاستقطاع <strong>'+(ratio*100).toFixed(1)+'%</strong>'+(bridgeEmi>0?' (عقاري + جسري)':'')+' — يتجاوز الحد الأقصى الشامل (55%). مرجع: ساما.'});
+        }
+
+        if(bridgeOn && bridgeAmount > 0){
+            alerts.push({type:'in',text:'التمويل الجسري: <strong>'+fm(bridgeAmount)+' ر.س</strong> بقسط شهري <strong>'+fm(bridgeEmi)+' ر.س</strong> لمدة '+gv('m_bridge_years')+' سنوات. إجمالي القسط الشهري (عقاري + جسري): <strong>'+fm(combinedEmi)+' ر.س</strong>'});
+        }
+
+        if(hasCashFlow){
+            var gap = totalFunds - totalCosts;
+            if(gap >= 0) alerts.push({type:'ok',text:'✓ سيولتك تكفي — لديك فائض <strong>'+fm(gap)+' ر.س</strong> بعد جميع التكاليف.'});
+            else alerts.push({type:'dg',text:'✕ عجز في السيولة: <strong>'+fm(Math.abs(gap))+' ر.س</strong>. '+(bridgeOn?'حتى مع التمويل الجسري.':'فعّل التمويل الجسري لتغطية الفرق.')});
         }
 
         var feesLines = [
@@ -845,34 +1045,49 @@ function saod_calc_shortcode( $atts ) {
             {label:'ضريبة القيمة المضافة ('+CFG.vat_pct+'%)', value:fm(fees.vat)+' ر.س'},
             {label:'ضريبة التصرفات العقارية (RETT)', value:fm(rett)+' ر.س'}
         ];
+        if(brokerage>0) feesLines.push({label:'السعي (الوساطة)', value:fm(brokerage)+' ر.س'});
+        if(evalFee>0) feesLines.push({label:'رسوم التقييم', value:fm(evalFee)+' ر.س'});
         if(dpSupport>0) feesLines.push({label:'دعم الدفعة المقدمة (REDF)',value:'-'+fm(dpSupport)+' ر.س'});
+        var totalCash = userDown + rett + fees.total + brokerage + evalFee;
         feesLines.push({label:'إجمالي المطلوب نقداً عند التوقيع',value:fm(totalCash)+' ر.س',total:true});
 
+        var totalCost = effectiveTotal + totalCash + bridgeTotal;
+
         var data = {
-            heroLabel: 'القسط الشهري'+(redf.monthlySubsidy>0?' (بعد الدعم)':''),
-            heroValue: effectiveEmi,
-            heroSub: redf.monthlySubsidy>0?'قبل الدعم: '+fm(emi)+' ر.س · دعم REDF الشهري: '+fm(redf.monthlySubsidy)+' ر.س':'',
+            heroLabel: 'القسط الشهري'+(redf.monthlySubsidy>0?' (بعد الدعم)':'')+(bridgeEmi>0?' + الجسري':''),
+            heroValue: combinedEmi,
+            heroSub: (redf.monthlySubsidy>0?'قبل الدعم: '+fm(emi)+' ر.س · دعم REDF: '+fm(redf.monthlySubsidy)+' ر.س':'')+(bridgeEmi>0?(redf.monthlySubsidy>0?' · ':'')+'عقاري: '+fm(effectiveEmi)+' + جسري: '+fm(bridgeEmi):''),
             alerts: alerts,
             metrics: [
                 {label:'مبلغ التمويل',value:fm(financed),unit:'ر.س'},
-                {label:'الدفعة الأولى',value:fm(userDown+(dpSupport)),unit:'ر.س',sub:dpSupport>0?'منها '+fm(dpSupport)+' دعم':''},
-                {label:'إجمالي السداد',value:fm(effectiveTotal),unit:'ر.س'},
-                {label:'أرباح البنك',value:fm(profit),unit:'ر.س',color:'var(--o)',sub:redf.totalSubsidy>0?'يتحمل REDF '+fm(redf.totalSubsidy):''},
+                {label:'الدفعة الأولى',value:fm(userDown+dpSupport),unit:'ر.س',sub:dpSupport>0?'منها '+fm(dpSupport)+' دعم':''},
+                {label:'إجمالي السداد',value:fm(effectiveTotal+(bridgeTotal)),unit:'ر.س',sub:bridgeTotal>0?'عقاري: '+fm(effectiveTotal)+' + جسري: '+fm(bridgeTotal):''},
+                {label:'أرباح البنك',value:fm(profit+(bridgeProfit)),unit:'ر.س',color:'var(--o)',sub:redf.totalSubsidy>0?'يتحمل REDF '+fm(redf.totalSubsidy):''},
                 {label:'APR شامل الرسوم',value:trueApr+'%',color:'var(--r)'},
-                {label:'التكلفة الكاملة',value:fm(totalCost),unit:'ر.س',color:'var(--r)',sub:'شامل الدفعة والرسوم والضريبة'}
+                {label:'التكلفة الكاملة',value:fm(totalCost),unit:'ر.س',color:'var(--r)',sub:'شامل الدفعة والرسوم والضريبة والسعي'}
             ],
             fees: feesLines,
             chart: {
-                centerPct:((profit-redf.totalSubsidy+fees.total+rett)/(financed+profit-redf.totalSubsidy+fees.total+rett)*100).toFixed(1)+'%',
+                centerPct:((profit-redf.totalSubsidy+fees.total+rett+brokerage+evalFee)/(financed+profit-redf.totalSubsidy+fees.total+rett+brokerage+evalFee)*100).toFixed(1)+'%',
                 centerLabel:'تكلفة التمويل',
                 segments:[
                     {label:'أصل التمويل',value:financed,color:'var(--c)'},
-                    {label:'أرباح (بعد الدعم)',value:Math.max(0,profit-redf.totalSubsidy),color:'var(--o)'},
-                    {label:'رسوم + ضريبة + RETT',value:fees.total+rett,color:'var(--p)'}
+                    {label:'أرباح (بعد الدعم)',value:Math.max(0,profit-redf.totalSubsidy)+bridgeProfit,color:'var(--o)'},
+                    {label:'رسوم + ضريبة + RETT + سعي',value:fees.total+rett+brokerage+evalFee,color:'var(--p)'}
                 ]
             },
-            schedule: E.amortize(financed, apr, months)
+            schedule: E.amortize(financed, apr, months),
+            tips: TIPS.mortgage
         };
+
+        if(hasCashFlow){
+            data.cashflow = {
+                costs: costItems,
+                totalCosts: totalCosts,
+                funds: fundItems,
+                totalFunds: totalFunds
+            };
+        }
 
         renderResults($('[data-r="mortgage"]'), data);
     }
@@ -887,14 +1102,11 @@ function saod_calc_shortcode( $atts ) {
 
         if(oldBal<=0) return;
 
-        // Old loan
         var oldEmi = E.pmt(oldBal, oldRate, oldMonths);
         var oldTotal = oldEmi * oldMonths;
 
-        // Settlement of old
         var settle = E.earlySettle(oldBal, oldRate, oldMonths, 0);
 
-        // New loan
         var newAmount = settle.principal + settle.compensation + extra;
         var fees = E.adminFee(newAmount, false);
         var newEmi = E.pmt(newAmount, newRate, newMonths);
@@ -940,7 +1152,8 @@ function saod_calc_shortcode( $atts ) {
                 {label:'ضريبة ('+CFG.vat_pct+'%)',value:fm(fees.vat)+' ر.س'},
                 {label:'الإجمالي',value:fm(fees.total+settle.compensation)+' ر.س',total:true}
             ],
-            schedule: E.amortize(newAmount, newRate, newMonths)
+            schedule: E.amortize(newAmount, newRate, newMonths),
+            tips: TIPS.buyout
         };
 
         renderResults($('[data-r="buyout"]'), data);
@@ -987,7 +1200,8 @@ function saod_calc_shortcode( $atts ) {
                     {label:'تعويض 3 أشهر',value:settle.compensation,color:'var(--o)'},
                     {label:'طرف ثالث',value:Math.max(settle.thirdParty,1),color:'var(--p)'}
                 ]
-            }
+            },
+            tips: TIPS.early
         };
 
         renderResults($('[data-r="early"]'), data);
