@@ -433,7 +433,7 @@ function saod_calc_shortcode( $atts ) {
                 <div class="calc-field">
                     <label>سقف الرسوم الإدارية <small>(ريال)</small></label>
                     <div class="input-wrap">
-                        <input type="text" id="<?php echo esc_attr( $uid ); ?>-admin-fee-cap" value="5,000" inputmode="numeric" class="has-suffix">
+                        <input type="text" id="<?php echo esc_attr( $uid ); ?>-admin-fee-cap" value="2,500" inputmode="numeric" class="has-suffix">
                         <span class="input-suffix">ر.س</span>
                     </div>
                 </div>
