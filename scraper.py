@@ -674,7 +674,7 @@ def merge_scraped(bank: dict, scraped: dict) -> dict:
     """
     Merge freshly scraped data into a bank entry.
     - On success: update APR, set status='ok', update last_updated
-    - On failure: keep old value, set status='stale'
+    - On failure: mark status='unavailable' — don't keep stale numbers
     """
     today = str(date.today())
     bank  = deepcopy(bank)
@@ -684,12 +684,13 @@ def merge_scraped(bank: dict, scraped: dict) -> dict:
         entry = bank.get(product, {})
 
         if fresh is None:
-            # Scrape failed for this product
-            if entry.get("status") == "ok":
-                entry["status"] = "stale"
-                log.warning(f"{bank['id']} {product}: scrape failed, keeping last known value (stale)")
+            entry["status"] = "unavailable"
+            entry.pop("apr", None)
+            entry.pop("flat", None)
+            entry.pop("apr_derived", None)
+            entry.pop("flat_derived", None)
+            log.warning(f"{bank['id']} {product}: scrape failed, marked unavailable")
         else:
-            # Merge fresh values
             if "apr" in fresh and fresh["apr"] is not None:
                 entry["apr"]         = fresh["apr"]
                 entry["apr_derived"] = fresh.get("apr_derived", False)

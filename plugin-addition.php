@@ -476,7 +476,13 @@ function saod_bank_rates_table_shortcode( $atts ) {
                 html += '</div>';
 
                 if (isUnavailable) {
-                    html += '<div style="text-align:center;padding:16px 0;color:var(--muted);">غير متاح حالياً لهذا المنتج</div>';
+                    if (source) {
+                        html += '<div style="text-align:center;padding:20px 0;">';
+                        html += '<a href="' + escHtml(source) + '" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;padding:10px 20px;background:var(--primary);color:#fff;border-radius:var(--radius);text-decoration:none;font-size:.95rem;">زيارة موقع البنك ↗</a>';
+                        html += '</div>';
+                    } else {
+                        html += '<div style="text-align:center;padding:16px 0;color:var(--muted);">غير متاح حالياً لهذا المنتج</div>';
+                    }
                 } else {
                     var apr = aprData.val;
                     var emi = calcEMI(amount, apr, years);
