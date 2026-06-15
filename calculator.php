@@ -521,10 +521,12 @@ function setFmt(inp) {
   });
 }
 
-function bankSelectHTML(idPrefix) {
+function bankSelectHTML(idPrefix, product) {
   if (!SAOD_RATES || !SAOD_RATES.banks) return '';
   var opts = '<option value="">— اختر بنك —</option>';
   SAOD_RATES.banks.forEach(function(b) {
+    var p = b[product];
+    if (!p || p.status === 'unavailable' || (!p.apr && !p.flat)) return;
     opts += '<option value="' + b.id + '">' + b.name_ar + '</option>';
   });
   return '<div class="field"><label>اختر بنك (تعبئة تلقائية)</label>' +
@@ -637,7 +639,7 @@ function personalHTML() {
 
 <div class="sec">
   <div class="sec-title"><span class="badge">2</span> تفاصيل القرض</div>
-  ` + bankSelectHTML('p') + `
+  ` + bankSelectHTML('p', 'personal') + `
   <div class="g3">
     <div class="field">
       <label>نوع النسبة</label>
@@ -909,7 +911,7 @@ function mortgageHTML() {
 
 <div class="sec">
   <div class="sec-title"><span class="badge">2</span> التمويل</div>
-  ` + bankSelectHTML('m') + `
+  ` + bankSelectHTML('m', 'mortgage') + `
   <div class="g3">
     <div class="field"><label>مدة العقاري (سنة)</label><input id="m_yrs" type="number" value="20" min="5" max="30" style="height:42px;width:100%;padding:0 12px;border:1px solid #ced4da;border-radius:var(--radius);font-size:1rem;font-family:inherit;outline:none;"></div>
     <div class="field"><label>نسبة الهامش / الفائدة %</label><div class="input-wrap"><input id="m_rate" type="number" value="4.0" step="0.1"><span class="sfx">%</span></div>
@@ -1260,7 +1262,7 @@ function buyoutHTML() {
       <div class="tog" id="botog_sec"><button class="on" data-v="emp">موظف (33%)</button><button data-v="ret">متقاعد (25%)</button></div>
     </div>
   </div>
-  ` + bankSelectHTML('bo') + `
+  ` + bankSelectHTML('bo', 'buyout') + `
   <div class="g3">
     <div class="field">
       <label>نوع النسبة</label>
