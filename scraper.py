@@ -684,12 +684,8 @@ def merge_scraped(bank: dict, scraped: dict) -> dict:
         entry = bank.get(product, {})
 
         if fresh is None:
-            entry["status"] = "unavailable"
-            entry.pop("apr", None)
-            entry.pop("flat", None)
-            entry.pop("apr_derived", None)
-            entry.pop("flat_derived", None)
-            log.warning(f"{bank['id']} {product}: scrape failed, marked unavailable")
+            log.warning(f"{bank['id']} {product}: scrape failed, keeping existing data")
+            continue
         else:
             if "apr" in fresh and fresh["apr"] is not None:
                 entry["apr"]         = fresh["apr"]
