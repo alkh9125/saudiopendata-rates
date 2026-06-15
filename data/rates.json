@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-06-14",
+  "last_updated": "2026-06-15",
   "update_source": "auto+manual",
   "banks": [
     {
@@ -17,7 +17,7 @@
         "apr_derived": true,
         "max_amount": 1000000,
         "max_years": 5,
-        "last_updated": "2026-06-14",
+        "last_updated": "2026-06-15",
         "status": "ok",
         "flat_derived": false
       },
@@ -27,7 +27,7 @@
         "apr_derived": false,
         "max_amount": 1000000,
         "max_years": 5,
-        "last_updated": "2026-06-14",
+        "last_updated": "2026-06-15",
         "status": "ok",
         "flat_derived": true
       },
