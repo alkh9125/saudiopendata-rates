@@ -150,7 +150,6 @@ function saod_bank_rates_table_shortcode( $atts ) {
     .saod-v2 .saod-card.saod-best {
         border-color: var(--primary); background: var(--primary-light);
     }
-    .saod-v2 .saod-card.saod-unavailable { opacity: .5; background: var(--bg); }
 
     .saod-v2 .saod-card-top {
         display: flex; justify-content: space-between; align-items: center;
@@ -197,6 +196,37 @@ function saod_bank_rates_table_shortcode( $atts ) {
         color: var(--primary); text-decoration: none; font-weight: 600;
     }
     .saod-v2 .saod-card-footer a:hover { text-decoration: underline; }
+
+    /* Unavailable banks compact grid */
+    .saod-v2 .saod-other-banks { margin-top: 16px; }
+    .saod-v2 .saod-other-title {
+        font-size: .82rem; color: var(--muted); font-weight: 700;
+        margin-bottom: 10px; padding-right: 4px;
+    }
+    .saod-v2 .saod-other-grid {
+        display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 8px;
+    }
+    .saod-v2 .saod-other-item {
+        display: flex; align-items: center; justify-content: space-between;
+        background: var(--surface); border: 1px solid var(--border);
+        border-radius: var(--radius); padding: 10px 14px;
+        font-size: .88rem; font-weight: 600;
+    }
+    .saod-v2 .saod-other-item a {
+        color: var(--primary); text-decoration: none; font-size: .8rem; font-weight: 700;
+        white-space: nowrap;
+    }
+    .saod-v2 .saod-other-item a:hover { text-decoration: underline; }
+
+    /* Empty state */
+    .saod-v2 .saod-empty {
+        text-align: center; padding: 30px 20px;
+        background: var(--surface); border: 1px solid var(--border);
+        border-radius: var(--radius-lg); color: var(--muted);
+    }
+    .saod-v2 .saod-empty p { font-size: .95rem; margin-bottom: 4px; }
+    .saod-v2 .saod-empty small { font-size: .8rem; }
 
     .saod-v2 .saod-savings {
         font-size: .78rem; color: var(--warn); font-weight: 700; margin-top: 8px;
@@ -424,112 +454,111 @@ function saod_bank_rates_table_shortcode( $atts ) {
             var years = parseInt(yearsEl.value, 10) || 5;
             var sorted = sortBanks(currentTab, years);
 
-            var bestApr = null;
-            var bestEMI = null;
-            for (var i = 0; i < sorted.length; i++) {
-                var p = sorted[i][currentTab];
-                if (p && p.status !== 'unavailable') {
-                    var aprData = getApr(p, years);
-                    if (aprData) {
-                        var emi = calcEMI(amount, aprData.val, years);
-                        if (bestApr === null) { bestApr = aprData.val; bestEMI = emi; }
-                    }
-                }
-            }
-
-            var html = '';
-            var rank = 0;
+            var available = [];
+            var unavailable = [];
             for (var i = 0; i < sorted.length; i++) {
                 var bank = sorted[i];
                 var p = bank[currentTab];
                 if (!p) continue;
+                var aprData = getApr(p, years);
+                var status = p.status || 'unavailable';
+                if (status === 'unavailable' || !aprData) {
+                    unavailable.push(bank);
+                } else {
+                    available.push(bank);
+                }
+            }
 
+            var bestApr = null;
+            var bestEMI = null;
+            if (available.length > 0) {
+                var p0 = available[0][currentTab];
+                var ad0 = getApr(p0, years);
+                if (ad0) { bestApr = ad0.val; bestEMI = calcEMI(amount, ad0.val, years); }
+            }
+
+            var html = '';
+
+            if (available.length === 0) {
+                html += '<div class="saod-empty">';
+                html += '<p>لا توجد نسب متاحة حالياً لهذا المنتج</p>';
+                html += '<small>يمكنك زيارة مواقع البنوك أدناه للاطلاع على أحدث النسب</small>';
+                html += '</div>';
+            }
+
+            for (var i = 0; i < available.length; i++) {
+                var bank = available[i];
+                var p = bank[currentTab];
                 var aprData = getApr(p, years);
                 var flatData = getFlat(p, years);
-                var status = p.status || 'unavailable';
+                var status = p.status || 'ok';
                 var source = (bank.source_url && bank.source_url[currentTab]) || '';
                 var maxAmt = p.max_amount;
                 var maxYrs = p.max_years;
-                var isUnavailable = (status === 'unavailable' || !aprData);
-                var isBest = (!isUnavailable && aprData.val === bestApr);
+                var isBest = (aprData.val === bestApr);
 
-                rank++;
                 var cardClass = 'saod-card';
                 if (isBest) cardClass += ' saod-best';
-                if (isUnavailable) cardClass += ' saod-unavailable';
 
                 var checked = compareSet.has(bank.id) ? ' checked' : '';
 
                 html += '<div class="' + cardClass + '" data-bank="' + bank.id + '">';
-
-                if (!isUnavailable) {
-                    html += '<label class="saod-compare-check" title="اختر للمقارنة"><input type="checkbox" data-id="' + bank.id + '"' + checked + '></label>';
-                }
+                html += '<label class="saod-compare-check" title="اختر للمقارنة"><input type="checkbox" data-id="' + bank.id + '"' + checked + '></label>';
 
                 html += '<div class="saod-card-top">';
                 html += '<p class="saod-bank-name">' + escHtml(bank.name_ar) + '</p>';
                 if (isBest) {
                     html += '<span class="saod-badge saod-badge-best">الأفضل</span>';
-                } else if (!isUnavailable) {
-                    html += '<span class="saod-badge saod-badge-rank">#' + rank + '</span>';
+                } else {
+                    html += '<span class="saod-badge saod-badge-rank">#' + (i + 1) + '</span>';
                 }
                 html += '</div>';
 
-                if (isUnavailable) {
-                    if (source) {
-                        html += '<div style="text-align:center;padding:20px 0;">';
-                        html += '<a href="' + escHtml(source) + '" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;padding:10px 20px;background:var(--primary);color:#fff;border-radius:var(--radius);text-decoration:none;font-size:.95rem;">زيارة موقع البنك ↗</a>';
-                        html += '</div>';
-                    } else {
-                        html += '<div style="text-align:center;padding:16px 0;color:var(--muted);">غير متاح حالياً لهذا المنتج</div>';
-                    }
+                var apr = aprData.val;
+                var emi = calcEMI(amount, apr, years);
+                var totalCost = emi * years * 12;
+                var totalProfit = totalCost - amount;
+
+                html += '<div class="saod-card-main">';
+
+                html += '<div class="saod-metric">';
+                html += '<div class="saod-metric-label">القسط الشهري</div>';
+                html += '<div class="saod-metric-value saod-rial">' + fmtN(Math.round(emi)) + ' <small>ر.س</small></div>';
+                html += '</div>';
+
+                html += '<div class="saod-metric">';
+                html += '<div class="saod-metric-label">إجمالي الربح</div>';
+                html += '<div class="saod-metric-value">' + fmtN(Math.round(totalProfit)) + ' <small>ر.س</small></div>';
+                html += '</div>';
+
+                html += '<div class="saod-metric">';
+                html += '<div class="saod-metric-label">APR</div>';
+                html += '<div class="saod-metric-value">' + apr + '%';
+                if (aprData.derived) html += ' <span class="derived" title="مشتق رياضياً من الثابت">*</span>';
+                if (status === 'stale') html += ' <span class="stale" title="قد لا تكون محدثة">⚠</span>';
+                html += '</div>';
+                html += '</div>';
+
+                html += '<div class="saod-metric">';
+                html += '<div class="saod-metric-label">Flat (ثابت)</div>';
+                html += '<div class="saod-metric-value">';
+                if (flatData) {
+                    html += flatData.val + '%';
+                    if (flatData.derived) html += ' <span class="derived" title="مشتق رياضياً من APR">*</span>';
                 } else {
-                    var apr = aprData.val;
-                    var emi = calcEMI(amount, apr, years);
-                    var totalCost = emi * years * 12;
-                    var totalProfit = totalCost - amount;
+                    html += '—';
+                }
+                html += '</div>';
+                html += '</div>';
 
-                    html += '<div class="saod-card-main">';
+                html += '</div>';
 
-                    html += '<div class="saod-metric">';
-                    html += '<div class="saod-metric-label">القسط الشهري</div>';
-                    html += '<div class="saod-metric-value saod-rial">' + fmtN(Math.round(emi)) + ' <small>ر.س</small></div>';
-                    html += '</div>';
-
-                    html += '<div class="saod-metric">';
-                    html += '<div class="saod-metric-label">إجمالي الربح</div>';
-                    html += '<div class="saod-metric-value">' + fmtN(Math.round(totalProfit)) + ' <small>ر.س</small></div>';
-                    html += '</div>';
-
-                    html += '<div class="saod-metric">';
-                    html += '<div class="saod-metric-label">APR</div>';
-                    html += '<div class="saod-metric-value">' + apr + '%';
-                    if (aprData.derived) html += ' <span class="derived" title="مشتق رياضياً من الثابت">*</span>';
-                    if (status === 'stale') html += ' <span class="stale" title="قد لا تكون محدثة">⚠</span>';
-                    html += '</div>';
-                    html += '</div>';
-
-                    html += '<div class="saod-metric">';
-                    html += '<div class="saod-metric-label">Flat (ثابت)</div>';
-                    html += '<div class="saod-metric-value">';
-                    if (flatData) {
-                        html += flatData.val + '%';
-                        if (flatData.derived) html += ' <span class="derived" title="مشتق رياضياً من APR">*</span>';
-                    } else {
-                        html += '—';
-                    }
-                    html += '</div>';
-                    html += '</div>';
-
-                    html += '</div>';
-
-                    if (isBest) {
-                        html += '<div class="saod-savings saod-savings-best">الأقل تكلفة بين جميع البنوك</div>';
-                    } else if (bestEMI != null) {
-                        var diff = totalCost - (bestEMI * years * 12);
-                        if (diff > 0) {
-                            html += '<div class="saod-savings">تكلفة إضافية ' + fmtN(Math.round(diff)) + ' ر.س مقارنة بالأرخص</div>';
-                        }
+                if (isBest && available.length > 1) {
+                    html += '<div class="saod-savings saod-savings-best">الأقل تكلفة بين جميع البنوك</div>';
+                } else if (bestEMI != null) {
+                    var diff = totalCost - (bestEMI * years * 12);
+                    if (diff > 0) {
+                        html += '<div class="saod-savings">تكلفة إضافية ' + fmtN(Math.round(diff)) + ' ر.س مقارنة بالأرخص</div>';
                     }
                 }
 
@@ -543,6 +572,24 @@ function saod_bank_rates_table_shortcode( $atts ) {
                 }
                 html += '</div>';
 
+                html += '</div>';
+            }
+
+            if (unavailable.length > 0) {
+                html += '<div class="saod-other-banks">';
+                html += '<div class="saod-other-title">بنوك أخرى — النسبة غير متوفرة حالياً</div>';
+                html += '<div class="saod-other-grid">';
+                for (var j = 0; j < unavailable.length; j++) {
+                    var ub = unavailable[j];
+                    var src = (ub.source_url && ub.source_url[currentTab]) || '';
+                    html += '<div class="saod-other-item">';
+                    html += '<span>' + escHtml(ub.name_ar) + '</span>';
+                    if (src) {
+                        html += '<a href="' + escAttr(src) + '" target="_blank" rel="nofollow noopener">موقع البنك ↗</a>';
+                    }
+                    html += '</div>';
+                }
+                html += '</div>';
                 html += '</div>';
             }
 
