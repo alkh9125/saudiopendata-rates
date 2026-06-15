@@ -521,62 +521,6 @@ function setFmt(inp) {
   });
 }
 
-function bankSelectHTML(idPrefix, product) {
-  if (!SAOD_RATES || !SAOD_RATES.banks) return '';
-  var opts = '<option value="">— اختر بنك —</option>';
-  SAOD_RATES.banks.forEach(function(b) {
-    var p = b[product];
-    if (!p || p.status === 'unavailable' || (!p.apr && !p.flat)) return;
-    opts += '<option value="' + b.id + '">' + b.name_ar + '</option>';
-  });
-  return '<div class="field"><label>اختر بنك (تعبئة تلقائية)</label>' +
-    '<div class="input-wrap"><select id="' + idPrefix + '_bank" style="height:42px;width:100%;padding:0 12px;border:1px solid #ced4da;border-radius:var(--radius);font-size:1rem;font-family:inherit;outline:none;background:#fff;">' +
-    opts + '</select></div>' +
-    '<div class="note" id="' + idPrefix + '_bank_note" style="color:var(--primary)"></div></div>';
-}
-
-function mountBankSelect(idPrefix, product, rateInputId, rtState, rtGroupId, calcFn) {
-  var sel = document.getElementById(idPrefix + '_bank');
-  if (!sel || !SAOD_RATES) return;
-  sel.addEventListener('change', function() {
-    var bankId = sel.value;
-    if (!bankId) return;
-    var bank = SAOD_RATES.banks.find(function(b){ return b.id === bankId; });
-    if (!bank || !bank[product]) return;
-    var prod = bank[product];
-    var rateInput = document.getElementById(rateInputId);
-    var note = document.getElementById(idPrefix + '_bank_note');
-    if (prod.apr && !prod.apr_derived) {
-      rateInput.value = prod.apr;
-      rtState.rt = 'apr';
-      var grp = document.getElementById(rtGroupId);
-      if (grp) {
-        grp.querySelectorAll('button').forEach(function(b){ b.classList.remove('on'); });
-        var aprBtn = grp.querySelector('[data-v="apr"]');
-        if (aprBtn) aprBtn.classList.add('on');
-      }
-      if (note) note.textContent = bank.name_ar + ': APR ' + prod.apr + '% — Flat ≈ ' + (prod.flat||'—') + '%';
-    } else if (prod.flat) {
-      rateInput.value = prod.flat;
-      rtState.rt = 'flat';
-      var grp = document.getElementById(rtGroupId);
-      if (grp) {
-        grp.querySelectorAll('button').forEach(function(b){ b.classList.remove('on'); });
-        var flatBtn = grp.querySelector('[data-v="flat"]');
-        if (flatBtn) flatBtn.classList.add('on');
-      }
-      if (note) note.textContent = bank.name_ar + ': Flat ' + prod.flat + '%';
-    }
-    if (prod.status === 'stale' && note) {
-      note.textContent += ' ⚠ بيانات قديمة — تحقق من البنك';
-      note.style.color = 'var(--warn)';
-    } else if (note) {
-      note.style.color = 'var(--primary)';
-    }
-    if (calcFn) calcFn();
-  });
-}
-
 function togGroup(groupId, stateObj, key, cb) {
   const el = document.getElementById(groupId);
   if (!el) return;
@@ -639,7 +583,6 @@ function personalHTML() {
 
 <div class="sec">
   <div class="sec-title"><span class="badge">2</span> تفاصيل القرض</div>
-  ` + bankSelectHTML('p', 'personal') + `
   <div class="g3">
     <div class="field">
       <label>نوع النسبة</label>
@@ -722,7 +665,7 @@ function mountPersonal() {
     else { n.classList.add('hidden'); r.value = '4.5'; }
     calc();
   });
-  mountBankSelect('p', 'personal', 'p_rate', st, 'ptog_rt', calc);
+
 
   ['p_sal','p_liab','p_amt','p_rate','p_years'].forEach(id => {
     const el = document.getElementById(id);
@@ -911,7 +854,6 @@ function mortgageHTML() {
 
 <div class="sec">
   <div class="sec-title"><span class="badge">2</span> التمويل</div>
-  ` + bankSelectHTML('m', 'mortgage') + `
   <div class="g3">
     <div class="field"><label>مدة العقاري (سنة)</label><input id="m_yrs" type="number" value="20" min="5" max="30" style="height:42px;width:100%;padding:0 12px;border:1px solid #ced4da;border-radius:var(--radius);font-size:1rem;font-family:inherit;outline:none;"></div>
     <div class="field"><label>نسبة الهامش / الفائدة %</label><div class="input-wrap"><input id="m_rate" type="number" value="4.0" step="0.1"><span class="sfx">%</span></div>
@@ -1034,7 +976,7 @@ function mountMortgage() {
     calc();
   });
   togGroup('mtog_sub', st, 'sub', calcSupport);
-  mountBankSelect('m', 'mortgage', 'm_rate', st, 'mtog_rt', calc);
+
 
   ['m_sal','m_liab','m_yrs','m_rate','m_price','m_sai_v','m_eval','m_other','m_save','p2_yrs','p2_rate'].forEach(id => {
     const el = document.getElementById(id);
@@ -1262,7 +1204,6 @@ function buyoutHTML() {
       <div class="tog" id="botog_sec"><button class="on" data-v="emp">موظف (33%)</button><button data-v="ret">متقاعد (25%)</button></div>
     </div>
   </div>
-  ` + bankSelectHTML('bo', 'buyout') + `
   <div class="g3">
     <div class="field">
       <label>نوع النسبة</label>
@@ -1298,7 +1239,7 @@ function mountBuyout() {
   document.querySelectorAll('#tab-body .bofmt').forEach(setFmt);
   togGroup('botog_sec', st, 'sec', calc);
   togGroup('botog_rt',  st, 'rt',  calc);
-  mountBankSelect('bo', 'buyout', 'bo_rate', st, 'botog_rt', calc);
+
   ['bo_bal','bo_emi','bo_rem','bo_sal','bo_liab','bo_rate','bo_yrs','bo_extra'].forEach(id => {
     const el = document.getElementById(id);
     if(el) { el.addEventListener('input', calc); el.addEventListener('change', calc); }
