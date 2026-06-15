@@ -1,6 +1,6 @@
 {
   "last_updated": "2026-06-15",
-  "update_source": "auto+manual",
+  "update_source": "manual",
   "banks": [
     {
       "id": "rajhi",
@@ -12,14 +12,14 @@
       },
       "scrape_method": "auto",
       "personal": {
-        "flat": 2.5,
-        "apr": 4.73,
-        "apr_derived": true,
+        "flat": 1.6,
+        "apr": 3.07,
+        "apr_derived": false,
         "max_amount": 1000000,
         "max_years": 5,
         "last_updated": "2026-06-15",
         "status": "ok",
-        "flat_derived": false
+        "flat_derived": true
       },
       "buyout": {
         "flat": 1.37,
@@ -32,13 +32,13 @@
         "flat_derived": true
       },
       "mortgage": {
-        "flat": 1.65,
-        "apr": 2.99,
+        "flat": 2.35,
+        "apr": 4.29,
         "apr_derived": false,
         "max_amount": 5000000,
         "max_years": 30,
-        "last_updated": "2026-06-12",
-        "status": "stale",
+        "last_updated": "2026-06-15",
+        "status": "ok",
         "flat_derived": true
       }
     },
@@ -46,11 +46,11 @@
       "id": "snb",
       "name_ar": "البنك الأهلي السعودي",
       "source_url": {
-        "personal": "https://www.alahli.com/ar/pages/personal-banking/finance/personal-finance",
+        "personal": "https://www.alahli.com/ar/pages/personal-banking/finance/finance-and-saving-pricing-personal-finance",
         "buyout": "https://www.alahli.com/ar/pages/personal-banking/finance/finance-transfer-program",
         "mortgage": "https://www.alahli.com/ar/pages/personal-banking/finance/home-finance"
       },
-      "scrape_method": "manual",
+      "scrape_method": "auto",
       "personal": {
         "flat": 1.56,
         "apr": 2.99,
@@ -58,7 +58,7 @@
         "max_amount": 2500000,
         "max_years": 5,
         "last_updated": "2026-06-12",
-        "status": "ok",
+        "status": "stale",
         "flat_derived": true
       },
       "buyout": {
@@ -68,7 +68,7 @@
         "max_amount": 2500000,
         "max_years": 5,
         "last_updated": "2026-06-12",
-        "status": "ok",
+        "status": "stale",
         "flat_derived": true
       },
       "mortgage": {
@@ -78,7 +78,7 @@
         "max_amount": 6000000,
         "max_years": 30,
         "last_updated": "2026-06-12",
-        "status": "ok",
+        "status": "stale",
         "flat_derived": true
       }
     },
@@ -128,27 +128,27 @@
       "source_url": {
         "personal": "https://anb.com.sa/ar/web/anb/personal-finance-offer",
         "buyout": "https://anb.com.sa/ar/web/anb/personal-loan-offer2",
-        "mortgage": "https://anb.com.sa/web/anb/calculator"
+        "mortgage": "https://anb.com.sa/web/anb/annual-profit-rate"
       },
-      "scrape_method": "manual",
+      "scrape_method": "auto",
       "personal": {
-        "flat": 0.98,
-        "apr": 1.89,
+        "flat": 1.85,
+        "apr": 3.53,
         "apr_derived": false,
         "max_amount": 1000000,
         "max_years": 5,
-        "last_updated": "2026-06-12",
+        "last_updated": "2026-06-15",
         "status": "ok",
         "flat_derived": true
       },
       "buyout": {
-        "flat": 0.82,
-        "apr": 1.59,
+        "flat": 1.85,
+        "apr": 3.53,
         "apr_derived": false,
         "max_amount": 1000000,
         "max_years": 5,
-        "last_updated": "2026-06-12",
-        "status": "ok",
+        "last_updated": "2026-06-15",
+        "status": "stale",
         "flat_derived": true
       },
       "mortgage": {
@@ -158,7 +158,7 @@
         "max_amount": 5000000,
         "max_years": 30,
         "last_updated": "2026-06-12",
-        "status": "ok",
+        "status": "stale",
         "flat_derived": true
       }
     },
@@ -172,13 +172,13 @@
       },
       "scrape_method": "auto",
       "personal": {
-        "flat": 0.98,
-        "apr": 1.89,
+        "flat": 2.96,
+        "apr": 5.64,
         "apr_derived": false,
         "max_amount": 1000000,
         "max_years": 5,
-        "last_updated": "2026-06-12",
-        "status": "stale",
+        "last_updated": "2026-06-15",
+        "status": "ok",
         "flat_derived": true
       },
       "buyout": {
@@ -210,14 +210,14 @@
         "buyout": "https://www.bankaljazira.com/ar/personal/finance/buyout",
         "mortgage": "https://www.bankaljazira.com/ar/personal/finance/home-finance"
       },
-      "scrape_method": "manual",
+      "scrape_method": "auto",
       "personal": {
-        "flat": 0.98,
-        "apr": 1.89,
+        "flat": 1.85,
+        "apr": 3.53,
         "apr_derived": false,
-        "max_amount": 1000000,
+        "max_amount": 500000,
         "max_years": 5,
-        "last_updated": "2026-06-12",
+        "last_updated": "2026-06-15",
         "status": "ok",
         "flat_derived": true
       },
@@ -228,7 +228,7 @@
         "max_amount": 1000000,
         "max_years": 5,
         "last_updated": "2026-06-12",
-        "status": "ok",
+        "status": "stale",
         "flat_derived": true
       },
       "mortgage": {
@@ -238,7 +238,7 @@
         "max_amount": 5000000,
         "max_years": 30,
         "last_updated": "2026-06-12",
-        "status": "ok",
+        "status": "stale",
         "flat_derived": true
       }
     },
@@ -247,28 +247,28 @@
       "name_ar": "بنك البلاد",
       "source_url": {
         "personal": "https://www.bankalbilad.com/ar/personal/financing/personal/Pages/default.aspx",
-        "buyout": "https://www.bankalbilad.com/ar/personal/financing/personal/Pages/default.aspx",
+        "buyout": "https://www.bankalbilad.com/ar/personal/financing/personal/Pages/buyout.aspx",
         "mortgage": "https://www.bankalbilad.com/ar/personal/financing/real-estate/albilad"
       },
-      "scrape_method": "manual",
+      "scrape_method": "auto",
       "personal": {
-        "flat": 0.98,
-        "apr": 1.9,
+        "flat": 1.9,
+        "apr": 3.63,
         "apr_derived": false,
         "max_amount": 1000000,
         "max_years": 5,
         "last_updated": "2026-06-12",
-        "status": "ok",
+        "status": "stale",
         "flat_derived": true
       },
       "buyout": {
-        "flat": 0.98,
-        "apr": 1.9,
+        "flat": 1.9,
+        "apr": 3.63,
         "apr_derived": false,
         "max_amount": 1000000,
         "max_years": 5,
         "last_updated": "2026-06-12",
-        "status": "ok",
+        "status": "stale",
         "flat_derived": true
       },
       "mortgage": {
@@ -278,7 +278,7 @@
         "max_amount": 5000000,
         "max_years": 30,
         "last_updated": "2026-06-12",
-        "status": "ok",
+        "status": "stale",
         "flat_derived": true
       }
     },
@@ -286,11 +286,11 @@
       "id": "alawwal",
       "name_ar": "البنك الأول",
       "source_url": {
-        "personal": "https://www.alawwalbank.com/ar/personal/finance-solutions/personal-finance",
-        "buyout": "https://www.alawwalbank.com/ar/personal/finance-solutions/buyout",
-        "mortgage": "https://www.alawwalbank.com/ar/personal/finance-solutions/home-finance"
+        "personal": "https://www.sab.com/ar/financing/personal-finance/",
+        "buyout": "https://www.sab.com/ar/financing/personal-finance/",
+        "mortgage": "https://www.sab.com/ar/personal/prices-of-financing-and-savings-products/"
       },
-      "scrape_method": "manual",
+      "scrape_method": "auto",
       "personal": {
         "flat": 1.03,
         "apr": 1.99,
@@ -298,7 +298,7 @@
         "max_amount": 1500000,
         "max_years": 5,
         "last_updated": "2026-06-12",
-        "status": "ok",
+        "status": "stale",
         "flat_derived": true
       },
       "buyout": {
@@ -308,7 +308,7 @@
         "max_amount": 1500000,
         "max_years": 5,
         "last_updated": "2026-06-12",
-        "status": "ok",
+        "status": "stale",
         "flat_derived": true
       },
       "mortgage": {
@@ -318,7 +318,7 @@
         "max_amount": 5000000,
         "max_years": 30,
         "last_updated": "2026-06-12",
-        "status": "ok",
+        "status": "stale",
         "flat_derived": true
       }
     }
