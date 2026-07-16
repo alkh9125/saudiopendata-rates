@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-07-15",
+  "last_updated": "2026-07-16",
   "update_source": "auto+manual",
   "banks": [
     {
@@ -14,19 +14,23 @@
       "personal": {
         "max_amount": 1000000,
         "max_years": 5,
-        "last_updated": "2026-07-15",
+        "last_updated": "2026-07-16",
         "status": "unavailable"
       },
       "buyout": {
         "max_amount": 1000000,
         "max_years": 5,
-        "last_updated": "2026-07-15",
-        "status": "unavailable"
+        "last_updated": "2026-07-16",
+        "status": "ok",
+        "apr": 5.61,
+        "apr_derived": false,
+        "flat": 2.98,
+        "flat_derived": true
       },
       "mortgage": {
         "max_amount": 5000000,
         "max_years": 30,
-        "last_updated": "2026-07-15",
+        "last_updated": "2026-07-16",
         "status": "unavailable"
       }
     },
@@ -42,19 +46,19 @@
       "personal": {
         "max_amount": 2500000,
         "max_years": 5,
-        "last_updated": "2026-07-15",
+        "last_updated": "2026-07-16",
         "status": "unavailable"
       },
       "buyout": {
         "max_amount": 2500000,
         "max_years": 5,
-        "last_updated": "2026-07-15",
+        "last_updated": "2026-07-16",
         "status": "unavailable"
       },
       "mortgage": {
         "max_amount": 6000000,
         "max_years": 30,
-        "last_updated": "2026-07-15",
+        "last_updated": "2026-07-16",
         "status": "unavailable"
       }
     },
@@ -70,19 +74,19 @@
       "personal": {
         "max_amount": 1000000,
         "max_years": 5,
-        "last_updated": "2026-07-15",
+        "last_updated": "2026-07-16",
         "status": "unavailable"
       },
       "buyout": {
         "max_amount": 1000000,
         "max_years": 5,
-        "last_updated": "2026-07-15",
+        "last_updated": "2026-07-16",
         "status": "unavailable"
       },
       "mortgage": {
         "max_amount": 5000000,
         "max_years": 30,
-        "last_updated": "2026-07-15",
+        "last_updated": "2026-07-16",
         "status": "unavailable"
       }
     },
@@ -98,7 +102,7 @@
       "personal": {
         "max_amount": 1000000,
         "max_years": 5,
-        "last_updated": "2026-07-15",
+        "last_updated": "2026-07-16",
         "status": "ok",
         "apr": 3.58,
         "apr_derived": false,
@@ -108,13 +112,13 @@
       "buyout": {
         "max_amount": 1000000,
         "max_years": 5,
-        "last_updated": "2026-07-15",
+        "last_updated": "2026-07-16",
         "status": "unavailable"
       },
       "mortgage": {
         "max_amount": 5000000,
         "max_years": 30,
-        "last_updated": "2026-07-15",
+        "last_updated": "2026-07-16",
         "status": "unavailable"
       }
     },
@@ -130,19 +134,19 @@
       "personal": {
         "max_amount": 1000000,
         "max_years": 5,
-        "last_updated": "2026-07-15",
+        "last_updated": "2026-07-16",
         "status": "unavailable"
       },
       "buyout": {
         "max_amount": 1000000,
         "max_years": 5,
-        "last_updated": "2026-07-15",
+        "last_updated": "2026-07-16",
         "status": "unavailable"
       },
       "mortgage": {
         "max_amount": 5000000,
         "max_years": 30,
-        "last_updated": "2026-07-15",
+        "last_updated": "2026-07-16",
         "status": "ok",
         "apr": 1.0,
         "apr_derived": false,
@@ -162,19 +166,19 @@
       "personal": {
         "max_amount": 500000,
         "max_years": 5,
-        "last_updated": "2026-07-15",
+        "last_updated": "2026-07-16",
         "status": "unavailable"
       },
       "buyout": {
         "max_amount": 1000000,
         "max_years": 5,
-        "last_updated": "2026-07-15",
+        "last_updated": "2026-07-16",
         "status": "unavailable"
       },
       "mortgage": {
         "max_amount": 5000000,
         "max_years": 30,
-        "last_updated": "2026-07-15",
+        "last_updated": "2026-07-16",
         "status": "unavailable"
       }
     },
@@ -190,19 +194,19 @@
       "personal": {
         "max_amount": 1000000,
         "max_years": 5,
-        "last_updated": "2026-07-15",
+        "last_updated": "2026-07-16",
         "status": "unavailable"
       },
       "buyout": {
         "max_amount": 1000000,
         "max_years": 5,
-        "last_updated": "2026-07-15",
+        "last_updated": "2026-07-16",
         "status": "unavailable"
       },
       "mortgage": {
         "max_amount": 5000000,
         "max_years": 30,
-        "last_updated": "2026-07-15",
+        "last_updated": "2026-07-16",
         "status": "unavailable"
       }
     },
@@ -221,20 +225,20 @@
         "apr_derived": true,
         "max_amount": 1500000,
         "max_years": 5,
-        "last_updated": "2026-07-15",
+        "last_updated": "2026-07-16",
         "status": "ok",
         "flat_derived": true
       },
       "buyout": {
         "max_amount": 1500000,
         "max_years": 5,
-        "last_updated": "2026-07-15",
+        "last_updated": "2026-07-16",
         "status": "unavailable"
       },
       "mortgage": {
         "max_amount": 5000000,
         "max_years": 30,
-        "last_updated": "2026-07-15",
+        "last_updated": "2026-07-16",
         "status": "unavailable"
       }
     }
